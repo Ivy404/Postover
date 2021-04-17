@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.postover.Model.Client;
 import com.example.postover.onboarding.AdapterSlide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity   {
     }
 
     private void registerNewUser(){
-
+        Client cliente = new Client(name.getText().toString(),password.getText().toString(),mail.getText().toString(),username.getText().toString());
     }
 
 }
