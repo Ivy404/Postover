@@ -3,11 +3,15 @@ package com.example.postover;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,6 +23,10 @@ import androidx.appcompat.widget.Toolbar;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private EditText username,password,mail,name;
+    private Button register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,4 +68,41 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    public void createLoginDialog(View v){
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View loginPopupView = getLayoutInflater().inflate(R.layout.popup_login, null);
+
+        dialogBuilder.setView(loginPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+    }
+
+    public void createRegisterDialog(View v){
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View registerPopupView = getLayoutInflater().inflate(R.layout.popup_register, null);
+        username = (EditText) registerPopupView.findViewById(R.id.pt_usernameRegister);
+        name = (EditText) registerPopupView.findViewById(R.id.pt_fullnameRegister);
+        password = (EditText) registerPopupView.findViewById(R.id.pt_TextPassword);
+        mail = (EditText) registerPopupView.findViewById(R.id.pt_mailRegister);
+
+        register = (Button) registerPopupView.findViewById(R.id.btn_registerRegister);
+
+        dialogBuilder.setView(registerPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerNewUser();
+            }
+        });
+    }
+
+    private void registerNewUser(){
+
+    }
+
 }
