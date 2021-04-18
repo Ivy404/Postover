@@ -3,15 +3,19 @@ package com.example.postover.Model;
 import java.util.Calendar;
 import java.util.Date;
 
-public class HomeNote extends Note{
-    private String text;
-    //Falta Content
+public class CalendarNote extends Note {
 
-    public HomeNote(String title){
+    private String subtitle;
+    private boolean notifications;
+    private Date date;
+
+    public CalendarNote(String title, String subtitle, Date date) {
         this.creationDate = Calendar.getInstance().getTime();
         this.setLastModification();
         this.setTitle(title);
-        this.setText("");
+        this.setSubtitle(subtitle);
+        this.setDate(date);
+        this.notifications = false;
     }
 
     @Override
@@ -39,16 +43,28 @@ public class HomeNote extends Note{
         return this.creationDate;
     }
 
-    public String getText() {
-        return this.text;
+    public String getSubtitle() {
+        return this.subtitle;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
+
+    public Date getDate() {
+        return this.date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     @Override
     public void save() {
-    //TODO
+        //TODO
+    }
+
+    public void switchNotifications() {
+        this.notifications = !this.notifications;
     }
 }
