@@ -11,7 +11,11 @@
         android:layout_height="wrap_content"
         android:theme="@style/Theme.Postover.AppBarOverlay">
 
-
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary" />
 
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -28,13 +32,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@android:drawable/ic_dialog_email"
+        android:contentDescription="TODO" />
 
-    <ImageView
-        android:layout_width="61dp"
-        android:layout_height="51dp"
-        android:src="@drawable/ic_baseline_menu_24"
-        android:tint="@color/black" />
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
