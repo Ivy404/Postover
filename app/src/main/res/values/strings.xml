@@ -42,5 +42,5 @@
     <string name="notes_button">Notes</string>
     <string name="calendar_button">Calendar</string>
     <string name="mysplashscreen">mysplashscreen</string>
-    <string name="floatingbutton">floatingbutton</string>
+    <string name="floatingbutton" />
 </resources>
