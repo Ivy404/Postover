@@ -42,9 +42,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Thread.sleep;
 
 public class MainActivity extends AppCompatActivity   {
+
 
     private AppBarConfiguration mAppBarConfiguration;
     private AlertDialog.Builder dialogBuilder;
@@ -68,8 +68,10 @@ public class MainActivity extends AppCompatActivity   {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
 
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity   {
         fragmentList.add(new GalleryFragment());
         fragmentList.add(new HomeFragment());
         fragmentList.add(new SlideshowFragment());
-        AdapterSlide adapter = new AdapterSlide(getSupportFragmentManager(),getLifecycle(),fragmentList);
+        AdapterSlide adapter = new AdapterSlide(getSupportFragmentManager(), getLifecycle(), fragmentList);
         ViewPager2 viewPager2 = findViewById(R.id.view_pager2);
         viewPager2.setAdapter(adapter);
         viewPager2.setCurrentItem(1);
@@ -133,9 +135,11 @@ public class MainActivity extends AppCompatActivity   {
         dialogBuilder = new AlertDialog.Builder(this);
         final View loginPopupView = getLayoutInflater().inflate(R.layout.popup_login, null);
 
+
         Button login = (Button) loginPopupView.findViewById(R.id.btn_login);
         loginMail = (EditText) loginPopupView.findViewById(R.id.pt_username);
         loginPassword = (EditText) loginPopupView.findViewById(R.id.pt_password);
+
 
         dialogBuilder.setView(loginPopupView);
         dialog = dialogBuilder.create();
@@ -152,13 +156,15 @@ public class MainActivity extends AppCompatActivity   {
 
     }
 
+
+
     public void openDrawer(View v){
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.openDrawer(GravityCompat.START);
     }
 
-    public void createRegisterDialog(View v) {
-
+    public void createRegisterDialog(View v){
+        dialogBuilder = new AlertDialog.Builder(this);
         final View registerPopupView = getLayoutInflater().inflate(R.layout.popup_register, null);
         editTextUsername = (EditText) registerPopupView.findViewById(R.id.pt_usernameRegister);
         editTextName = (EditText) registerPopupView.findViewById(R.id.pt_fullnameRegister);
@@ -231,4 +237,6 @@ public class MainActivity extends AppCompatActivity   {
             }
         });
     }
+
+
 }
