@@ -14,7 +14,4 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="SplashTheme" parent="AppThemeNight">
-        <item name="android:windowBackground">@drawable/splashscreen</item>
-    </style>
 </resources>
