@@ -3,17 +3,17 @@ package com.example.postover.Model;
 import java.util.Calendar;
 import java.util.Date;
 
-public class HomeNote extends Note{
-    private String text;
-    //Falta Content
+public class ToDoNote extends Note{
 
-    public HomeNote(String title){
+    private boolean completed;
+    private boolean resetToDo; // PARA EL RESET CREO QUE SERIA MEJOR HACER QUE CUANDO SE AVANZA DE DIA SE HAGA CLEAR DE LO QUE HABIA
+
+    public ToDoNote(String title){
         this.creationDate = Calendar.getInstance().getTime();
         this.setLastModification();
         this.setTitle(title);
-        this.setText("");
+        this.completed = false;
     }
-
     @Override
     public String getTitle() {
         return this.title;
@@ -39,12 +39,12 @@ public class HomeNote extends Note{
         return this.creationDate;
     }
 
-    public String getText() {
-        return this.text;
+    public void switchCompleted(){
+        this.completed = !this.completed;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public boolean getCompleted(){
+        return this.completed;
     }
 
     @Override
