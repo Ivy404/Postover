@@ -27,7 +27,7 @@ public class SplashFragment extends Fragment {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                navController.navigate(R.id.action_splashFragment_to_viewPagerFragment);
+                navController.navigate(R.id.viewPagerFragment);
             }
         };
         handler.postDelayed(runnable,3000);

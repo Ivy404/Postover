@@ -39,7 +39,31 @@ public class ViewPagerFragment extends Fragment {
         ViewPager2 viewPager2 = root.findViewById(R.id.view_pager2);
 
         viewPager2.setAdapter(adapter);
+        viewPager2.setCurrentItem(1);
+
+
+        root.findViewById(R.id.todo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager2.setCurrentItem(0);
+            }
+        });
+        root.findViewById(R.id.home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager2.setCurrentItem(1);
+            }
+        });
+        root.findViewById(R.id.calendar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager2.setCurrentItem(2);
+            }
+        });
+
 
         return root;
+
+
     }
 }
