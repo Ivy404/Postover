@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1031976145011",
+    "project_id": "postover-a7127",
+    "storage_bucket": "postover-a7127.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1031976145011:android:70ce8929c0903a1c60da06",
+        "android_client_info": {
+          "package_name": "com.example.postover"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1031976145011-67nop1pi7bf7acch1fmm7cjkpj1jpm6i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.postover",
+            "certificate_hash": "2cde42c41dc19e0def5c32f7c38766fca25ca9c2"
+          }
+        },
+        {
+          "client_id": "1031976145011-f922paqe06o95756njnsv9mkvtc50n5v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE0V0QOmriTSibOzQqQ-0LmbSIl-i7ZZk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1031976145011-f922paqe06o95756njnsv9mkvtc50n5v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
