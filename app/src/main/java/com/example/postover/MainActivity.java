@@ -1,6 +1,7 @@
 package com.example.postover;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Menu;
 import android.view.WindowManager;
@@ -41,7 +42,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import static java.lang.Thread.sleep;
+
+public class MainActivity extends AppCompatActivity   {
 
     private AppBarConfiguration mAppBarConfiguration;
     private AlertDialog.Builder dialogBuilder;
@@ -60,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -77,47 +80,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        drawer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer.openDrawer(GravityCompat.START);
-            }
-        });
-        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.viewPagerFragment).setDrawerLayout(drawer).build();
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(new GalleryFragment());
         fragmentList.add(new HomeFragment());
         fragmentList.add(new SlideshowFragment());
-        AdapterSlide adapter = new AdapterSlide(getSupportFragmentManager(), getLifecycle(), fragmentList);
+        AdapterSlide adapter = new AdapterSlide(getSupportFragmentManager(),getLifecycle(),fragmentList);
         ViewPager2 viewPager2 = findViewById(R.id.view_pager2);
         viewPager2.setAdapter(adapter);
         viewPager2.setCurrentItem(1);
 
-       /* findViewById(R.id.todo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        Button todo = findViewById(R.id.todo);
+        Button notes = findViewById(R.id.notes);
+        Button calendar = findViewById(R.id.calendar);
+
+        todo.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
                 viewPager2.setCurrentItem(0);
-            }
-        });
-        findViewById(R.id.home).setOnClickListener(new View.OnClickListener() {
+           }
+       });;
+        notes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewPager2.setCurrentItem(1);
             }
         });
-        findViewById(R.id.calendar).setOnClickListener(new View.OnClickListener() {
+        calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewPager2.setCurrentItem(2);
             }
-        });*/
+        });
+
+
     }
 
     @Override
@@ -155,6 +150,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void openDrawer(View v){
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.openDrawer(GravityCompat.START);
     }
 
     public void createRegisterDialog(View v) {

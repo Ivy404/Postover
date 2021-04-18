@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Postover</string>
+    <string name="app_name"></string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -36,4 +36,10 @@
     <string name="to_do_list">To do List</string>
     <string name="notes">Notes</string>
     <string name="calendar">Calendar</string>
+    <string name="menu">menu</string>
+    <string name="todo">TODO</string>
+    <string name="todo_button">Todo</string>
+    <string name="notes_button">Notes</string>
+    <string name="calendar_button">Calendar</string>
+    <string name="mysplashscreen">mysplashscreen</string>
 </resources>

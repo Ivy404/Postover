@@ -12,7 +12,7 @@ public abstract class Note {
     public abstract String getTitle();
     public abstract void setTitle(String title);
     public abstract Date getLastModification();
-    public abstract void setLastModification(Date lastModification);
+    public abstract void setLastModification();
     public abstract Date getCreationDate();
     public abstract void save();
 }
