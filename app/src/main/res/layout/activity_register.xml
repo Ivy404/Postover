@@ -12,8 +12,32 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:background="#da0000" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="415dp"
+            android:layout_height="137dp"
+            app:srcCompat="@drawable/red_shape"
+            />
+
+        <TextView
+            android:id="@+id/tv_registerscreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="230dp"
+            android:text="Sign in"
+            android:textColor="#BA0000"
+            android:textSize="24sp"
+
+            android:textStyle="bold" />
+
         <EditText
-            android:layout_marginTop="260dp"
+            android:layout_marginTop="100dp"
             android:id="@+id/pt_fullnameRegister"
             android:layout_width="325dp"
             android:layout_height="wrap_content"
@@ -73,5 +97,6 @@
             android:text="I'm a member already"
             android:layout_marginTop="10dp"
             />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
