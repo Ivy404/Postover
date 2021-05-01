@@ -6,7 +6,6 @@ import java.util.Date;
 public class ToDoNote extends Note{
 
     private boolean completed;
-    private boolean resetToDo; // PARA EL RESET CREO QUE SERIA MEJOR HACER QUE CUANDO SE AVANZA DE DIA SE HAGA CLEAR DE LO QUE HABIA
 
     public ToDoNote(String title){
         this.creationDate = Calendar.getInstance().getTime();
@@ -51,4 +50,13 @@ public class ToDoNote extends Note{
     public void save() {
     //TODO
     }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
 }
