@@ -1,10 +1,10 @@
 package com.example.postover.ui.TODO;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,9 +15,10 @@ import com.example.postover.Model.ToDoNote;
 import com.example.postover.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class TodoFragment extends Fragment {
+public class TodoFragment extends Fragment implements DialogCloseListener {
     private RecyclerView recyclerView;
     private TodoAdapter todoAdapter;
     private  List<ToDoNote> todoList;
@@ -35,10 +36,21 @@ public class TodoFragment extends Fragment {
         todoList.add(note);
         todoList.add(note);
         todoList.add(note);
+        todoList.add(note);
+        todoList.add(note);
+
 
         todoAdapter.setTodoList(todoList);
 
 
         return root;
+    }
+
+    @Override
+    public void handleDialogClose(DialogInterface dialog) {
+
+        Collections.reverse(todoList);
+        todoAdapter.setTodoList(todoList);
+
     }
 }

@@ -1,4 +1,4 @@
-package com.example.postover.onboarding;
+package com.example.postover.SlideFragments;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
