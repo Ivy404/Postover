@@ -1,5 +1,6 @@
 package com.example.postover;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.postover.Model.Client;
 import com.example.postover.SlideFragments.AdapterSlide;
+import com.example.postover.ui.TODO.DialogCloseListener;
 import com.example.postover.ui.TODO.TodoFragment;
 import com.example.postover.ui.home.HomeFragment;
 import com.example.postover.ui.slideshow.CalendarFragment;
@@ -39,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity   {
+public class MainActivity extends AppCompatActivity implements DialogCloseListener {
 
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity   {
     private EditText loginMail, loginPassword;
     private String email, name, username, password;
     private String mailLogin, passwordLogin;
+    private TodoFragment todoFragment;
 
     //cositas del firebase
     private DatabaseReference mDatabase;
@@ -71,7 +74,8 @@ public class MainActivity extends AppCompatActivity   {
 
 
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new TodoFragment());
+        todoFragment = new TodoFragment();
+        fragmentList.add(todoFragment);
         fragmentList.add(new HomeFragment());
         fragmentList.add(new CalendarFragment());
         AdapterSlide adapter = new AdapterSlide(getSupportFragmentManager(), getLifecycle(), fragmentList);
@@ -164,6 +168,7 @@ public class MainActivity extends AppCompatActivity   {
                 if (task.isSuccessful()) {
                     FirebaseUser user = mAuth.getCurrentUser();
                     Toast.makeText(MainActivity.this, "Success! login completed", Toast.LENGTH_SHORT).show();
+                    todoFragment.getList();
                     dialog.dismiss();
                 } else {
                     Toast.makeText(MainActivity.this, "Error! These credentials do not match our records", Toast.LENGTH_SHORT).show();
@@ -171,6 +176,10 @@ public class MainActivity extends AppCompatActivity   {
             }
         });
     }
+    @Override
+    public void handleDialogClose(DialogInterface dialog) {
+        todoFragment.getList();
 
+    }
 
 }

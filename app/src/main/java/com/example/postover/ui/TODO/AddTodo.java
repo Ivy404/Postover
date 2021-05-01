@@ -1,32 +1,45 @@
 package com.example.postover.ui.TODO;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.Fragment;
 
+
+import com.example.postover.Model.Client;
 import com.example.postover.Model.ToDoNote;
 import com.example.postover.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddTodo extends BottomSheetDialogFragment {
 
+    public static final String TAG = "ActionBottomDialog";
     private EditText newTodoText;
     private Button newTodoButton;
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
 
 
     public static AddTodo newInstance(){
@@ -51,27 +64,18 @@ public class AddTodo extends BottomSheetDialogFragment {
         super.onViewCreated(view,savedInstanceState);
         newTodoText = getView().findViewById(R.id.new_todo_text);
         newTodoButton = getView().findViewById(R.id.new_todo_button);
-        //data base
+        newTodoButton.setEnabled(false);
 
-        Bundle bundle = getArguments();
-        boolean isUpdated = false;
-        if(bundle != null){
-            String todo = bundle.getString("Todo");
-            newTodoText.setText(todo);
-            isUpdated = true;
-            if(todo.length()>0){
-                newTodoButton.setTextColor(ContextCompat.getColor(getContext(),R.color.lightred));
-            }
-        }
-        newTodoButton.addTextChangedListener(new TextWatcher() {
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        newTodoText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.equals("")){
+                if(s.toString().equals("")){
                     newTodoButton.setEnabled(false);
                     newTodoButton.setTextColor(Color.GRAY);
                 }
@@ -86,31 +90,46 @@ public class AddTodo extends BottomSheetDialogFragment {
             }
         });
 
-        boolean finalIsUpdated = isUpdated;
         newTodoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String textTodo = newTodoText.getText().toString();
-                if(finalIsUpdated){
-                    //database
-                }
-                else{
-                    ToDoNote todoNote = new ToDoNote(textTodo);
+                String key = mDatabase.child("users").push().getKey();
+                mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", task.getException());
+                        } else {
+                            Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                            Client client = task.getResult().getValue(Client.class);
+                            List<ToDoNote> todoList;
+                            if(client.getTodoList() == null){
+                                 todoList = new ArrayList<>();
+                            }
+                            else {
+                                 todoList = client.getTodoList();
+                            }
+                            todoList.add(new ToDoNote(newTodoText.getText().toString()));
+                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(client);
 
-                }
-                dismiss();
+                        }
+                        dismiss();
+                    }
+
+                });
+
+
+
             }
         });
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog){
-        FragmentActivity fragmentActivityactivity = getActivity();
-        if(fragmentActivityactivity instanceof DialogCloseListener){
-            ((DialogCloseListener)fragmentActivityactivity).handleDialogClose(dialog);
+    public void onDismiss(DialogInterface dialog) {
+        Activity activity = getActivity();
+        if (activity instanceof DialogCloseListener) {
+            ((DialogCloseListener) activity).handleDialogClose(dialog);
         }
     }
-
-
 
 }

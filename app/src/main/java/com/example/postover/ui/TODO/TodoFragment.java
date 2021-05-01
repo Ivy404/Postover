@@ -2,27 +2,44 @@ package com.example.postover.ui.TODO;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.postover.Model.Client;
 import com.example.postover.Model.ToDoNote;
 import com.example.postover.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
-public class TodoFragment extends Fragment implements DialogCloseListener {
+import static android.content.ContentValues.TAG;
+
+public class TodoFragment extends Fragment {
     private RecyclerView recyclerView;
     private TodoAdapter todoAdapter;
-    private  List<ToDoNote> todoList;
-
+    private List<ToDoNote> todoList;
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
+    private FloatingActionButton fab;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_todo, container, false);
@@ -32,25 +49,47 @@ public class TodoFragment extends Fragment implements DialogCloseListener {
         todoAdapter = new TodoAdapter(getActivity());
         recyclerView.setAdapter(todoAdapter);
 
-        ToDoNote note = new ToDoNote("Todo note");
-        todoList.add(note);
-        todoList.add(note);
-        todoList.add(note);
-        todoList.add(note);
-        todoList.add(note);
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        fab= root.findViewById(R.id.todo_fab);
 
 
-        todoAdapter.setTodoList(todoList);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddTodo.newInstance().show(getActivity().getSupportFragmentManager(),AddTodo.TAG);
+            }
+        });
+
+
+
 
 
         return root;
     }
 
-    @Override
-    public void handleDialogClose(DialogInterface dialog) {
-
-        Collections.reverse(todoList);
-        todoAdapter.setTodoList(todoList);
-
+    public void getList() {
+        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                } else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    Client client = task.getResult().getValue(Client.class);
+                    List<ToDoNote> todoList;
+                    if(client.getTodoList() == null){
+                        todoList = new ArrayList<>();
+                    }
+                    else {
+                        todoList = client.getTodoList();
+                    }
+                    todoAdapter.setTodoList(todoList);
+                }
+            }
+        });
     }
+
+
+
 }

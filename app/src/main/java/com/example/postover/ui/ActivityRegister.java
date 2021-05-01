@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.postover.MainActivity;
 import com.example.postover.Model.Client;
+import com.example.postover.Model.ToDoNote;
 import com.example.postover.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -45,7 +48,6 @@ public class ActivityRegister extends AppCompatActivity {
         Button register = (Button) findViewById(R.id.button_register_final);
         TextView member = (TextView) findViewById(R.id.TV_member);
         intent = new Intent(ActivityRegister.this, MainActivity.class);
-
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
