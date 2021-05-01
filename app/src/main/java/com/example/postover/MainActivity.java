@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         mAuth = FirebaseAuth.getInstance();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -81,15 +80,15 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             else if (getIntent().getExtras().getString("Guest") != null){
                 System.out.println("he entrado");
 
-            }else{
+            }else if (getIntent().getExtras().getString("KeepLoged") != null){
+                createFragments();
+            }
+            else{
                 createFragments();
             }
         }catch (NullPointerException e){
-
+            createFragments();
         }
-
-
-
     }
     public void signOut(View v){
         mAuth.signOut();
