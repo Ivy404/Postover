@@ -29,6 +29,7 @@ public class Splash extends Activity {
         super.onStart();
         if(mAuth.getCurrentUser()!=null){
             Intent mainIntent = new Intent(Splash.this, MainActivity.class);
+            mainIntent.putExtra("KeepLoged","KeepLoged");
             Splash.this.startActivity(mainIntent);
             Splash.this.finish();
 
@@ -38,7 +39,6 @@ public class Splash extends Activity {
                 public void run() {
                     /* Create an Intent that will start the Menu-Activity. */
                     Intent mainIntent = new Intent(Splash.this, ActivityRegister.class);
-                    mainIntent.putExtra("KeepLoged","KeepLoged");
                     Splash.this.startActivity(mainIntent);
                     Splash.this.finish();
                 }
