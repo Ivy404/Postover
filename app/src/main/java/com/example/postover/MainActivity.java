@@ -1,11 +1,13 @@
 package com.example.postover;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.postover.Model.Client;
@@ -122,14 +124,13 @@ public class MainActivity extends AppCompatActivity   {
     }
 
     public void createLoginDialog(View v) {
-        dialogBuilder = new AlertDialog.Builder(this);
+        // TextView register = findViewById(R.id.tv_register);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View loginPopupView = getLayoutInflater().inflate(R.layout.popup_login, null);
-
-
         Button login = (Button) loginPopupView.findViewById(R.id.btn_login);
+        TextView register = loginPopupView.findViewById(R.id.tv_register);
         loginMail = (EditText) loginPopupView.findViewById(R.id.pt_username);
         loginPassword = (EditText) loginPopupView.findViewById(R.id.pt_password);
-
 
         dialogBuilder.setView(loginPopupView);
         dialog = dialogBuilder.create();
@@ -144,74 +145,21 @@ public class MainActivity extends AppCompatActivity   {
             }
         });
 
-    }
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, com.example.postover.ui.ActivityRegister.class);
+                startActivity(intent);
+            }
+        });
 
+    }
 
 
     public void openDrawer(View v){
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.openDrawer(GravityCompat.START);
     }
-
-    public void createRegisterDialog(View v){
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View registerPopupView = getLayoutInflater().inflate(R.layout.popup_register, null);
-        editTextUsername = (EditText) registerPopupView.findViewById(R.id.pt_usernameRegister);
-        editTextName = (EditText) registerPopupView.findViewById(R.id.pt_fullnameRegister);
-        editTextPassword = (EditText) registerPopupView.findViewById(R.id.pt_TextPassword);
-        editTextEmail = (EditText) registerPopupView.findViewById(R.id.pt_mailRegister);
-        Button register = (Button) registerPopupView.findViewById(R.id.btn_registerRegister);
-
-        dialogBuilder.setView(registerPopupView);
-        dialog = dialogBuilder.create();
-        dialog.show();
-
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                name = editTextName.getText().toString();
-                username = editTextUsername.getText().toString();
-                password = editTextPassword.getText().toString();
-                email = editTextEmail.getText().toString();
-
-                if (!name.isEmpty() && !email.isEmpty() && !username.isEmpty() && !password.isEmpty()) {
-                    if (password.length() >= 6) {
-                        registerNewUser();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Password isn't strong enough", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(MainActivity.this, "Complete all fields", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    private void registerNewUser() {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Client cliente = new Client(name, password, email, username);
-                    String id = mAuth.getCurrentUser().getUid();
-                    mDatabase.child("users").child(id).setValue(cliente).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task2) {
-                            if (task2.isSuccessful()) {
-                                Toast.makeText(MainActivity.this, "User added", Toast.LENGTH_LONG).show();
-                                dialog.dismiss();
-                            } else {
-                                Toast.makeText(MainActivity.this, "User could not be created", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                } else {
-                    Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
 
     public void loginUser() {
         mAuth.signInWithEmailAndPassword(mailLogin, passwordLogin).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
