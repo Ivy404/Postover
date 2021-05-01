@@ -1,25 +1,22 @@
 package com.example.postover;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.Menu;
-import android.view.WindowManager;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.postover.Model.Client;
 import com.example.postover.onboarding.AdapterSlide;
-import com.example.postover.ui.gallery.GalleryFragment;
+import com.example.postover.ui.TODO.TodoFragment;
 import com.example.postover.ui.home.HomeFragment;
-import com.example.postover.ui.slideshow.SlideshowFragment;
+import com.example.postover.ui.slideshow.CalendarFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -73,19 +70,12 @@ public class MainActivity extends AppCompatActivity   {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        });
 
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new GalleryFragment());
+        fragmentList.add(new TodoFragment());
         fragmentList.add(new HomeFragment());
-        fragmentList.add(new SlideshowFragment());
+        fragmentList.add(new CalendarFragment());
         AdapterSlide adapter = new AdapterSlide(getSupportFragmentManager(), getLifecycle(), fragmentList);
         ViewPager2 viewPager2 = findViewById(R.id.view_pager2);
         viewPager2.setAdapter(adapter);
