@@ -29,7 +29,7 @@ public class AddTodo extends BottomSheetDialogFragment {
     private Button newTodoButton;
 
 
-    public static AddTodo newInstance(){
+    public static AddTodo newInstance() {
         return new AddTodo();
     }
 
@@ -40,27 +40,27 @@ public class AddTodo extends BottomSheetDialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_todo_new,container,false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_todo_new, container, false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return view;
     }
 
     @Override
-     public void onViewCreated(View view, Bundle savedInstanceState){
-        super.onViewCreated(view,savedInstanceState);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         newTodoText = getView().findViewById(R.id.new_todo_text);
         newTodoButton = getView().findViewById(R.id.new_todo_button);
         //data base
 
         Bundle bundle = getArguments();
         boolean isUpdated = false;
-        if(bundle != null){
+        if (bundle != null) {
             String todo = bundle.getString("Todo");
             newTodoText.setText(todo);
             isUpdated = true;
-            if(todo.length()>0){
-                newTodoButton.setTextColor(ContextCompat.getColor(getContext(),R.color.lightred));
+            if (todo.length() > 0) {
+                newTodoButton.setTextColor(ContextCompat.getColor(getContext(), R.color.lightred));
             }
         }
         newTodoButton.addTextChangedListener(new TextWatcher() {
@@ -71,15 +71,15 @@ public class AddTodo extends BottomSheetDialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.equals("")){
+                if (s.equals("")) {
                     newTodoButton.setEnabled(false);
                     newTodoButton.setTextColor(Color.GRAY);
-                }
-                else{
+                } else {
                     newTodoButton.setEnabled(true);
-                    newTodoButton.setTextColor(ContextCompat.getColor(getContext(),R.color.lightred));
+                    newTodoButton.setTextColor(ContextCompat.getColor(getContext(), R.color.lightred));
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -91,10 +91,9 @@ public class AddTodo extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 String textTodo = newTodoText.getText().toString();
-                if(finalIsUpdated){
+                if (finalIsUpdated) {
                     //database
-                }
-                else{
+                } else {
                     ToDoNote todoNote = new ToDoNote(textTodo);
 
                 }
@@ -104,13 +103,11 @@ public class AddTodo extends BottomSheetDialogFragment {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog){
+    public void onDismiss(DialogInterface dialog) {
         FragmentActivity fragmentActivityactivity = getActivity();
-        if(fragmentActivityactivity instanceof DialogCloseListener){
-            ((DialogCloseListener)fragmentActivityactivity).handleDialogClose(dialog);
+        if (fragmentActivityactivity instanceof DialogCloseListener) {
+            ((DialogCloseListener) fragmentActivityactivity).handleDialogClose(dialog);
         }
     }
-
-
 
 }

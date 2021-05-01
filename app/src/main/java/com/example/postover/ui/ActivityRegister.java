@@ -76,7 +76,7 @@ public class ActivityRegister extends AppCompatActivity {
         });
     }
 
-    private void registerNewUser(){
+    private void registerNewUser() {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
