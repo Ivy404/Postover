@@ -52,7 +52,7 @@ public class TodoFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         fab= root.findViewById(R.id.todo_fab);
-
+        getList();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

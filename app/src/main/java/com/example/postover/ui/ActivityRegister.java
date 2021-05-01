@@ -36,6 +36,7 @@ public class ActivityRegister extends AppCompatActivity {
     private FirebaseAuth mAuth;
     Intent intent;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
@@ -63,7 +64,16 @@ public class ActivityRegister extends AppCompatActivity {
 
                 if (!name.isEmpty() && !email.isEmpty() && !username.isEmpty() && !password.isEmpty()) {
                     if (password.length() >= 6) {
-                        registerNewUser();
+                        boolean completed = registerNewUser();
+                        if(completed) {
+                            Intent mainIntent = new Intent(ActivityRegister.this, MainActivity.class);
+                            ActivityRegister.this.startActivity(mainIntent);
+                            ActivityRegister.this.finish();
+                        }else{
+                            Intent mainIntent = new Intent(ActivityRegister.this, ActivityRegister.class);
+                            ActivityRegister.this.startActivity(mainIntent);
+                            ActivityRegister.this.finish();
+                        }
                     } else {
                         Toast.makeText(ActivityRegister.this, "Error! Password isn't strong enough", Toast.LENGTH_SHORT).show();
                     }
@@ -87,6 +97,7 @@ public class ActivityRegister extends AppCompatActivity {
             public void onClick(View v) {
                 registerGuestUser();
                 Intent mainIntent = new Intent(ActivityRegister.this, MainActivity.class);
+                mainIntent.putExtra("Guest","Guest");
                 ActivityRegister.this.startActivity(mainIntent);
                 ActivityRegister.this.finish();
             }
@@ -99,7 +110,7 @@ public class ActivityRegister extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(ActivityRegister.this, "Authentication failed.",
@@ -109,7 +120,8 @@ public class ActivityRegister extends AppCompatActivity {
                 });
     }
 
-    private void registerNewUser() {
+    private boolean registerNewUser() {
+        boolean[] completed = new boolean[1];
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -121,18 +133,21 @@ public class ActivityRegister extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task2) {
                             if (task2.isSuccessful()) {
                                 Toast.makeText(ActivityRegister.this, "Success! User added", Toast.LENGTH_LONG).show();
-                                finish(); // cambiar intent
-                                startActivity(intent);
+                                completed[0] = true;
                             } else {
                                 Toast.makeText(ActivityRegister.this, "Error! User could not be created", Toast.LENGTH_SHORT).show();
+                                mDatabase.child("users").child(id).removeValue();
+                                completed[0] = false;
                             }
                         }
                     });
                 } else {
                     Toast.makeText(ActivityRegister.this, "Error! Something went wrong", Toast.LENGTH_SHORT).show();
+                    completed[0] = false;
                 }
             }
         });
+        return completed[0];
     }
 }
 

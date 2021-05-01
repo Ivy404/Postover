@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     //cositas del firebase
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
+    public FirebaseUser user;
+
 
 
     @Override
@@ -68,10 +70,27 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        user = mAuth.getCurrentUser();
+        try {
+            if (getIntent().getExtras().getString("Login") != null) {
+                View v = new View(getApplicationContext());
+                createLoginDialog(v);
+            }
+            else if (getIntent().getExtras().getString("Guest") != null){
+                System.out.println("he entrado");
+
+            }else{
+                createFragments();
+            }
+        }catch (NullPointerException e){
+
+        }
 
 
 
+    }
 
+    public void createFragments(){
         List<Fragment> fragmentList = new ArrayList<>();
         todoFragment = new TodoFragment();
         fragmentList.add(todoFragment);
@@ -87,11 +106,11 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         Button calendar = findViewById(R.id.calendar);
 
         todo.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 viewPager2.setCurrentItem(0);
-           }
-       });;
+            }
+        });;
         notes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,15 +123,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 viewPager2.setCurrentItem(2);
             }
         });
-        try {
-            if (getIntent().getExtras().getString("Login") != null) {
-                View v = new View(getApplicationContext());
-                createLoginDialog(v);
-            }
-        }catch (NullPointerException e){
-
-        }
-
     }
 
     @Override
@@ -172,10 +182,11 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    FirebaseUser user = mAuth.getCurrentUser();
+                     user = mAuth.getCurrentUser();
                     Toast.makeText(MainActivity.this, "Success! login completed", Toast.LENGTH_SHORT).show();
-                    todoFragment.getList();
+                    createFragments();
                     dialog.dismiss();
+
                 } else {
                     Toast.makeText(MainActivity.this, "Error! These credentials do not match our records", Toast.LENGTH_SHORT).show();
                 }

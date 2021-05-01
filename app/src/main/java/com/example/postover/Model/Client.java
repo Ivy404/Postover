@@ -24,7 +24,7 @@ public class Client {
         this.password = password;
         this.mail = mail;
         todoList = new ArrayList<>();
-        ToDoNote note = new ToDoNote("G");
+        ToDoNote note = new ToDoNote("Your First Todo!");
         todoList.add(note);
 
     }
