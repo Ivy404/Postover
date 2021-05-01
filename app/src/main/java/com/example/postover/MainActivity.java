@@ -47,10 +47,9 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private AppBarConfiguration mAppBarConfiguration;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-    private EditText editTextUsername, editTextPassword, editTextEmail, editTextName;
+
 
     private EditText loginMail, loginPassword;
-    private String email, name, username, password;
     private String mailLogin, passwordLogin;
     private TodoFragment todoFragment;
 
@@ -105,7 +104,14 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 viewPager2.setCurrentItem(2);
             }
         });
+        try {
+            if (getIntent().getExtras().getString("Login") != null) {
+                View v = new View(getApplicationContext());
+                createLoginDialog(v);
+            }
+        }catch (NullPointerException e){
 
+        }
 
     }
 
