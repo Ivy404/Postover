@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.postover.Model.Client;
 import com.example.postover.SlideFragments.AdapterSlide;
+import com.example.postover.ui.ActivityRegister;
 import com.example.postover.ui.TODO.DialogCloseListener;
 import com.example.postover.ui.TODO.TodoFragment;
 import com.example.postover.ui.home.HomeFragment;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
 
         mAuth = FirebaseAuth.getInstance();
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
         try {
@@ -89,7 +91,12 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
 
     }
-
+    public void signOut(View v){
+        mAuth.signOut();
+        Intent mainIntent = new Intent(MainActivity.this, ActivityRegister.class);
+        MainActivity.this.startActivity(mainIntent);
+        MainActivity.this.finish();
+    }
     public void createFragments(){
         List<Fragment> fragmentList = new ArrayList<>();
         todoFragment = new TodoFragment();
@@ -142,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     public void createLoginDialog(View v) {
         // TextView register = findViewById(R.id.tv_register);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setCancelable(false);
         final View loginPopupView = getLayoutInflater().inflate(R.layout.popup_login, null);
         Button login = (Button) loginPopupView.findViewById(R.id.btn_login);
         TextView register = loginPopupView.findViewById(R.id.tv_register);
@@ -157,15 +165,20 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             public void onClick(View v) {
                 mailLogin = loginMail.getText().toString();
                 passwordLogin = loginPassword.getText().toString();
-                loginUser();
+                if(mailLogin.length()>0 && passwordLogin.length()>0){
+                    loginUser();
+                }else{
+                    Toast.makeText(MainActivity.this, "Cannot be empty!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, com.example.postover.ui.ActivityRegister.class);
-                startActivity(intent);
+                Intent mainIntent = new Intent(MainActivity.this, ActivityRegister.class);
+                MainActivity.this.startActivity(mainIntent);
+                MainActivity.this.finish();
             }
         });
 
