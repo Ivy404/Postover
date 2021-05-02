@@ -38,6 +38,7 @@ public class Client {
 
     }
     public Client(){}
+
     public String getName() {
         return name;
     }
