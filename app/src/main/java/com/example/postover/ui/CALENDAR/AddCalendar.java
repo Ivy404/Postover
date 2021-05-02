@@ -79,12 +79,14 @@ public class AddCalendar extends BottomSheetDialogFragment {
         newCalendarNote = getView().findViewById(R.id.new_calendar_text);
         newCalendarButton = getView().findViewById(R.id.new_calendar_button);
         newCalendarNotesub = getView().findViewById(R.id.new_calendar_text_sub);
-        newCalendarNotesub.setInputType(0);
+
         newCalendarButton.setEnabled(false);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        final boolean[] first = {false};
+        final boolean[] second = {false};
         newCalendarNote.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -93,11 +95,14 @@ public class AddCalendar extends BottomSheetDialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.toString().equals("")){
                     newCalendarButton.setEnabled(false);
-                    newCalendarNotesub.setInputType(0);
                     newCalendarButton.setTextColor(Color.GRAY);
                 }
                 else{
-                    newCalendarNotesub.setInputType(1);
+                    first[0] = true;
+                    if(first[0] && second[0]){
+                        newCalendarButton.setTextColor(ContextCompat.getColor(getContext(),R.color.lightred));
+                        newCalendarButton.setEnabled(true);
+                    }
                 }
             }
             @Override
@@ -117,8 +122,11 @@ public class AddCalendar extends BottomSheetDialogFragment {
                     newCalendarButton.setTextColor(Color.GRAY);
                 }
                 else{
-                    newCalendarButton.setTextColor(ContextCompat.getColor(getContext(),R.color.lightred));
-                    newCalendarButton.setEnabled(true);
+                    second[0] = true;
+                    if(first[0] && second[0]){
+                        newCalendarButton.setTextColor(ContextCompat.getColor(getContext(),R.color.lightred));
+                        newCalendarButton.setEnabled(true);
+                    }
                 }
             }
 
