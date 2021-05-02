@@ -266,7 +266,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         }
     }
 
-
     public void openDrawer(View v) {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.openDrawer(GravityCompat.START);
