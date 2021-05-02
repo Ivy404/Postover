@@ -32,6 +32,7 @@ import com.example.postover.Model.Note;
 import com.example.postover.Model.ToDoNote;
 import com.example.postover.R;
 import com.example.postover.ui.ActivityRegister;
+import com.example.postover.ui.TODO.AddTodo;
 import com.example.postover.ui.TODO.TodoAdapter;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
@@ -58,9 +59,6 @@ public class HomeFragment extends Fragment {
     }
 
     public void AddNote(View view){
-        String notename = "NOTA";
-        HomeNote note = new HomeNote(notename);
-        homeNotes.add(note);
-        mainAdapter.setHomeNotes(homeNotes);
+        AddHomeNote.newInstance().show(getActivity().getSupportFragmentManager(),AddTodo.TAG);
     }
 }

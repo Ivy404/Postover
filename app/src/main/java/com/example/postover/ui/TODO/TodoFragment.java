@@ -61,11 +61,6 @@ public class TodoFragment extends Fragment {
                 addTodo.show(getActivity().getSupportFragmentManager(),AddTodo.TAG);
             }
         });
-
-
-
-
-
         return root;
     }
 
@@ -90,7 +85,5 @@ public class TodoFragment extends Fragment {
             }
         });
     }
-
-
 
 }
