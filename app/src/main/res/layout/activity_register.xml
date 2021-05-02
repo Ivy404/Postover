@@ -34,7 +34,9 @@
             android:textColor="#BA0000"
             android:textSize="24sp"
 
-            android:textStyle="bold" />
+            android:textStyle="bold"
+
+            />
 
         <EditText
             android:layout_marginTop="100dp"
@@ -82,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/Register"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="60dp"
             android:textAllCaps="false"
             android:textColor="#FFF6F6"
             android:textSize="16sp"
@@ -95,6 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="I'm a member already"
+            android:textStyle="bold"
             android:layout_marginTop="10dp"
             />
         <TextView
@@ -103,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Continue as guest"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="50dp"
             />
 
     </LinearLayout>

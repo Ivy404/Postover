@@ -35,6 +35,7 @@ public class ActivityRegister extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     Intent intent;
+    Intent loginIntent;
 
 
     @Override
@@ -53,6 +54,7 @@ public class ActivityRegister extends AppCompatActivity {
         TextView member = (TextView) findViewById(R.id.TV_member);
         TextView guest = (TextView) findViewById(R.id.guestMember);
         intent = new Intent(ActivityRegister.this, MainActivity.class);
+        loginIntent = new Intent(ActivityRegister.this, ActivityLogin.class);
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,10 +79,8 @@ public class ActivityRegister extends AppCompatActivity {
         member.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainIntent = new Intent(ActivityRegister.this, MainActivity.class);
-                mainIntent.putExtra("Login","Login");
-                ActivityRegister.this.startActivity(mainIntent);
-                ActivityRegister.this.finish();
+                finish();
+                startActivity(loginIntent);
             }
         });
         guest.setOnClickListener(new View.OnClickListener() {
@@ -88,9 +88,9 @@ public class ActivityRegister extends AppCompatActivity {
             public void onClick(View v) {
                 registerGuestUser();
                 Intent mainIntent = new Intent(ActivityRegister.this, MainActivity.class);
-                mainIntent.putExtra("Guest","Guest");
-                ActivityRegister.this.startActivity(mainIntent);
                 ActivityRegister.this.finish();
+                ActivityRegister.this.startActivity(mainIntent);
+
             }
         });
     }

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.postover.Model.Client;
 import com.example.postover.Model.HomeNote;
 import com.example.postover.SlideFragments.AdapterSlide;
+import com.example.postover.ui.ActivityLogin;
 import com.example.postover.ui.ActivityRegister;
 import com.example.postover.ui.DialogCloseListener;
 import com.example.postover.ui.TODO.TodoFragment;
@@ -92,19 +93,19 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         try {
             if (getIntent().getExtras().getString("Login") != null) {
                 View v = new View(getApplicationContext());
-                createLoginDialog(v);
-            }
-            else if (getIntent().getExtras().getString("Guest") != null){
+                Intent intent = new Intent(MainActivity.this, ActivityLogin.class);
+                MainActivity.this.finish();
+                MainActivity.this.startActivity(intent);
+            } else if (getIntent().getExtras().getString("Guest") != null) {
                 System.out.println("he entrado");
 
-            }else if (getIntent().getExtras().getString("KeepLoged") != null){
+            } else if (getIntent().getExtras().getString("KeepLoged") != null) {
+                createFragments();
+            } else {
                 createFragments();
             }
-            else{
-                createFragments();
-            }
-        }catch (NullPointerException e){
-
+        } catch (NullPointerException e) {
+            //createFragments();
         }
 
 
@@ -192,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         final View loginPopupView = getLayoutInflater().inflate(R.layout.popup_login, null);
         Button login = (Button) loginPopupView.findViewById(R.id.btn_login);
         TextView register = loginPopupView.findViewById(R.id.tv_register);
-        ImageView googleLogin = loginPopupView.findViewById(R.id.google_login);
+        Button googleLogin = loginPopupView.findViewById(R.id.google_login);
         loginMail = (EditText) loginPopupView.findViewById(R.id.pt_username);
         loginPassword = (EditText) loginPopupView.findViewById(R.id.pt_password);
 
