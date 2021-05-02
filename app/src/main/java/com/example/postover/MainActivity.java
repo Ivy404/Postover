@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.postover.Model.Client;
 import com.example.postover.Model.HomeNote;
 import com.example.postover.SlideFragments.AdapterSlide;
+import com.example.postover.ui.ActivityLogin;
 import com.example.postover.ui.ActivityRegister;
 import com.example.postover.ui.DialogCloseListener;
 import com.example.postover.ui.TODO.TodoFragment;
@@ -61,8 +62,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private AlertDialog dialog;
 
 
-    private EditText loginMail, loginPassword;
-    private String mailLogin, passwordLogin;
+
     private TodoFragment todoFragment;
     private HomeFragment homeFragment;
     private CalendarFragment calendarFragment;
@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private FirebaseAuth mAuth;
     public FirebaseUser user;
 
-    private int GOOGLE_SIGN_IN = 100;
 
 
     @Override
@@ -91,7 +90,9 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         try {
             if (getIntent().getExtras().getString("Login") != null) {
                 View v = new View(getApplicationContext());
-                createLoginDialog(v);
+                Intent intent = new Intent(MainActivity.this, ActivityLogin.class);
+                MainActivity.this.finish();
+                MainActivity.this.startActivity(intent);
             } else if (getIntent().getExtras().getString("Guest") != null) {
                 System.out.println("he entrado");
 
@@ -164,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                     nameNavHead.setText(client.getName());
                     TextView emailNavHead = (TextView) findViewById(R.id.emailNavhead);
                     emailNavHead.setText(client.getMail());
-
                 }
             }
         });
@@ -184,109 +184,13 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 || super.onSupportNavigateUp();
     }
 
-    public void createLoginDialog(View v) {
-        // TextView register = findViewById(R.id.tv_register);
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setCancelable(false);
-        final View loginPopupView = getLayoutInflater().inflate(R.layout.popup_login, null);
-        Button login = (Button) loginPopupView.findViewById(R.id.btn_login);
-        TextView register = loginPopupView.findViewById(R.id.tv_register);
-        Button googleLogin = loginPopupView.findViewById(R.id.google_login);
-        loginMail = (EditText) loginPopupView.findViewById(R.id.pt_username);
-        loginPassword = (EditText) loginPopupView.findViewById(R.id.pt_password);
 
-        dialogBuilder.setView(loginPopupView);
-        dialog = dialogBuilder.create();
-        dialog.show();
-
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mailLogin = loginMail.getText().toString();
-                passwordLogin = loginPassword.getText().toString();
-                if (mailLogin.length() > 0 && passwordLogin.length() > 0) {
-                    loginUser();
-                } else {
-                    Toast.makeText(MainActivity.this, "Cannot be empty!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mainIntent = new Intent(MainActivity.this, ActivityRegister.class);
-                MainActivity.this.startActivity(mainIntent);
-                MainActivity.this.finish();
-            }
-        });
-
-        googleLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build();
-                GoogleSignInClient googleClient = GoogleSignIn.getClient(MainActivity.this, gso);
-                googleClient.signOut();
-
-                startActivityForResult(googleClient.getSignInIntent(), GOOGLE_SIGN_IN);
-            }
-        });
-
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == GOOGLE_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-
-                if(account != null){
-                    AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
-                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-                                //Datos realetime database
-                            }else{
-                                Toast.makeText(MainActivity.this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
-            } catch (ApiException e) {
-                Toast.makeText(this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
     public void openDrawer(View v) {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.openDrawer(GravityCompat.START);
     }
 
-    public void loginUser() {
-        mAuth.signInWithEmailAndPassword(mailLogin, passwordLogin).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    user = mAuth.getCurrentUser();
-                    Toast.makeText(MainActivity.this, "Success! login completed", Toast.LENGTH_SHORT).show();
-                    createFragments();
-                    dialog.dismiss();
-
-                } else {
-                    Toast.makeText(MainActivity.this, "Error! These credentials do not match our records", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
 
     @Override
     public void handleDialogClose(DialogInterface dialog,String note) {
