@@ -16,12 +16,12 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 
 import com.example.postover.Model.Client;
 import com.example.postover.Model.ToDoNote;
 import com.example.postover.R;
+import com.example.postover.ui.DialogCloseListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -123,7 +123,7 @@ public class AddTodo extends BottomSheetDialogFragment {
     public void onDismiss(DialogInterface dialog) {
         Activity activity = getActivity();
         if (activity instanceof DialogCloseListener) {
-            ((DialogCloseListener) activity).handleDialogClose(dialog);
+            ((DialogCloseListener) activity).handleDialogClose(dialog,"Todo");
         }
     }
 
