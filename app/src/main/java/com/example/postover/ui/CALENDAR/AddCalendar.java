@@ -163,7 +163,6 @@ public class AddCalendar extends BottomSheetDialogFragment {
                         calendar.set(Calendar.YEAR, year);
 
                         CalendarNote nota = new CalendarNote(newCalendarNote.getText().toString(), newCalendarNotesub.getText().toString(), calendar.getTime());
-                        Toast.makeText(view.getContext(), calendar.getTime().toString()+"", Toast.LENGTH_LONG).show();
                         addCalendarNote(nota);
 
                     }
@@ -188,8 +187,6 @@ public class AddCalendar extends BottomSheetDialogFragment {
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.YEAR, year);
                 CalendarNote nota = new CalendarNote(newCalendarNote.getText().toString(), newCalendarNotesub.getText().toString(), calendar.getTime());
-
-                Toast.makeText(view.getContext(), nota.getDate().toString()+"", Toast.LENGTH_LONG).show();
                 addCalendarNote(nota);
             }
         },hora,min,true);
