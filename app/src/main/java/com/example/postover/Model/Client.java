@@ -6,6 +6,7 @@ import com.example.postover.R;
 import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ public class Client {
     //private Image icon;
     private List<ToDoNote> todoList;
     private List<HomeNote> homeNoteList;
+    private List<CalendarNote> calendarNotes;
 
     public Client(String name, String password, String mail, String username) {
         this.name = name;
@@ -28,8 +30,10 @@ public class Client {
         homeNoteList = new ArrayList<>();
         ToDoNote note = new ToDoNote("Your First Todo!");
         HomeNote homeNote = new HomeNote("Your first HomeNote!");
+        CalendarNote calendarNote = new CalendarNote("First Calendar","Information", Calendar.getInstance().getTime());
         todoList.add(note);
         homeNoteList.add(homeNote);
+        calendarNotes.add(calendarNote);
 
     }
     public Client(){}

@@ -13,7 +13,7 @@ public class HomeNote extends Note{
         this.setTitle(title);
         this.setText("");
     }
-
+    public HomeNote(){}
     @Override
     public String getTitle() {
         return this.title;
@@ -49,6 +49,6 @@ public class HomeNote extends Note{
 
     @Override
     public void save() {
-    //TODO
+        //TODO
     }
 }
