@@ -11,7 +11,7 @@ public class HomeNote extends Note{
         this.creationDate = Calendar.getInstance().getTime();
         this.setLastModification();
         this.setTitle(title);
-        this.setText("");
+        this.setText("hola");
     }
     public HomeNote(){}
     @Override

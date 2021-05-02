@@ -24,6 +24,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,21 +46,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class HomeFragment extends Fragment {
-    private GridView gridView;
+    private RecyclerView reciclerView;
     private MainAdapter mainAdapter;
-    private  List<HomeNote> homeNotes;
+    private List<HomeNote> homeNotes;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         homeNotes = new ArrayList<>();
+        homeNotes.add(new HomeNote("Your First Note"));
         root.findViewById(R.id.home_fab).setOnClickListener(this::AddNote);
-
-        gridView = root.findViewById(R.id.grid_view);
-        mainAdapter = new MainAdapter(getActivity(), homeNotes);
-        gridView.setAdapter(mainAdapter);
-
+        mainAdapter = new MainAdapter(homeNotes, getActivity());
+        reciclerView = root.findViewById(R.id.homeRecyclerView);
+        reciclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        reciclerView.setAdapter(mainAdapter);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -95,7 +96,7 @@ public class HomeFragment extends Fragment {
                     else {
                         homeNotes = client.getHomeNoteList();
                     }
-                    mainAdapter.setHomeNotes(homeNotes);
+                    mainAdapter.setNotes(homeNotes);
                 }
             }
         });
