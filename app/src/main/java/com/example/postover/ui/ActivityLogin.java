@@ -94,6 +94,7 @@ public class ActivityLogin extends AppCompatActivity {
 
                 GoogleSignInClient googleClient = GoogleSignIn.getClient(ActivityLogin.this, gso);
 
+
                 //googleClient.signOut();
 
                 startActivityForResult(googleClient.getSignInIntent(), GOOGLE_SIGN_IN);
