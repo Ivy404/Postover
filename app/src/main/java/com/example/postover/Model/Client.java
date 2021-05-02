@@ -28,6 +28,7 @@ public class Client {
         this.mail = mail;
         todoList = new ArrayList<>();
         homeNoteList = new ArrayList<>();
+        calendarNotes = new ArrayList<>();
         ToDoNote note = new ToDoNote("Your First Todo!");
         HomeNote homeNote = new HomeNote("Your first HomeNote!");
         CalendarNote calendarNote = new CalendarNote("First Calendar","Information", Calendar.getInstance().getTime());
