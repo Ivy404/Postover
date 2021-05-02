@@ -8,25 +8,15 @@
     android:scaleType="centerCrop"
     tools:context=".ui.home.HomeFragment">
 
-    <!--GridView
-        android:id="@+id/grid_view"
-        android:layout_width="410dp"
-        android:layout_height="595dp"
-        android:numColumns="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </GridView-->
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/homeRecyclerView"
         android:layout_width="match_parent"
         android:layout_marginTop="70dp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
 
     <RelativeLayout
         android:id="@+id/relative_Layout"

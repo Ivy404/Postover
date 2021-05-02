@@ -4,15 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/app_bar_main">
+
+
 
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        app:elevation = "0dp"
         android:background="#CC000000"
-        android:clickable="true">
+        >
 
         <ImageView
             android:id="@+id/menu_image"
@@ -24,8 +28,9 @@
             android:tint="@color/white" />
     </androidx.appcompat.widget.Toolbar>
 
-
     <include layout="@layout/content_main" />
+
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
