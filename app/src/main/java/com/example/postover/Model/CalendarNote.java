@@ -18,6 +18,8 @@ public class CalendarNote extends Note {
         this.notifications = false;
     }
 
+    public CalendarNote(){};
+
     @Override
     public String getTitle() {
         return this.title;

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+android:id="@+id/linearlayoutcalendar"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_below="@+id/day_calendar_text"
+android:layout_alignParentStart="true"
+android:layout_alignParentLeft="true"
+android:orientation="vertical">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="60dp"
+    android:layout_marginLeft="60dp"
+    android:orientation="vertical"
+    tool:ignore="UselessParent">
+
+    <TextView
+        android:id="@+id/calendar_info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
+        android:text="CALENDAR NOTE"
+        android:textSize="15dp"
+
+        />
+
+    <TextView
+        android:id="@+id/calendar_subInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Subinformation"
+        android:textSize="10dp" />
+</LinearLayout>
+
+</LinearLayout>
+

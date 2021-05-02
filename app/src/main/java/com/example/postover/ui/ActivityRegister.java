@@ -65,11 +65,6 @@ public class ActivityRegister extends AppCompatActivity {
                 if (!name.isEmpty() && !email.isEmpty() && !username.isEmpty() && !password.isEmpty()) {
                     if (password.length() >= 6) {
                         registerNewUser();
-
-
-
-
-
                     } else {
                         Toast.makeText(ActivityRegister.this, "Error! Password isn't strong enough", Toast.LENGTH_SHORT).show();
                     }

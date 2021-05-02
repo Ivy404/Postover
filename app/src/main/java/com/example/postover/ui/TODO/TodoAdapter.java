@@ -19,8 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.List;
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
-    private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
     private List<ToDoNote> todoList;
     FragmentActivity mainActivity;
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -50,8 +48,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_todo_task, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_todo_task, parent, false);
 
         return new ViewHolder(view);
     }
