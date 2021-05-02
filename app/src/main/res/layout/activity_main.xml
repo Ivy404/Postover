@@ -32,59 +32,74 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         android:layout_marginTop="20dp"
-        app:headerLayout="@layout/nav_header_main"
         android:background="#80000000"
-        >
+        android:fadingEdge="none"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="80pt"
             android:orientation="vertical">
 
             <Button
                 android:id="@+id/todo"
-                android:layout_width="wrap_content"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|left"
-                android:layout_marginLeft="10dp"
-                android:backgroundTint="@color/lightred"
+                android:fadingEdge="none"
                 android:text="@string/todo_button"
-                android:textColor="@color/black"/>
+                android:textColor="@color/white"
+                app:backgroundTint="#00FFFFFF"
+                app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
+                app:iconGravity="end"
+                app:iconTint="#FFFFFF" />
 
             <Button
                 android:id="@+id/notes"
-                android:layout_width="wrap_content"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|left"
-                android:layout_marginLeft="10dp"
-                android:backgroundTint="@color/lightred"
+                android:fadingEdge="none"
                 android:text="@string/notes_button"
-                android:textColor="@color/black"/>
+                android:textColor="@color/white"
+                app:backgroundTint="#00FFFFFF"
+                app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
+                app:iconGravity="end"
+                app:iconTint="#FFFFFF"/>
 
             <Button
                 android:id="@+id/calendar"
-                android:layout_width="wrap_content"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|left"
-                android:layout_marginLeft="10dp"
-                android:backgroundTint="@color/lightred"
+                android:fadingEdge="none"
                 android:text="@string/calendar_button"
-                android:textColor="@color/black"/>
+                android:textColor="@color/white"
+                app:backgroundTint="#00FFFFFF"
+                app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
+                app:iconGravity="end"
+                app:iconTint="#FFFFFF" />
         </LinearLayout>
 
         <Button
             android:id="@+id/signOut"
-            android:layout_width="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="10dp"
-            android:backgroundTint="@color/lightred"
             android:onClick="signOut"
-            android:text="Sign Out"
-            android:textColor="@color/black">
+            android:text="@string/signout_button"
+            android:textColor="@color/white"
+            app:backgroundTint="#00FFFFFF"
+            app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
+            app:iconGravity="end"
+            app:iconTint="#FFFFFF">
 
         </Button>
     </com.google.android.material.navigation.NavigationView>

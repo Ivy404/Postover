@@ -48,4 +48,5 @@
     <string name="EditarHomeNote">Editar</string>
     <string name="BorrarHomeNote">Borrar</string>
     <string name="floatingbutton" />
+    <string name="signout_button">Sign out</string>
 </resources>
