@@ -42,5 +42,10 @@
     <string name="notes_button">Notes</string>
     <string name="calendar_button">Calendar</string>
     <string name="mysplashscreen">mysplashscreen</string>
+    <string name="title">TITULO</string>
+    <string name="secondary_text">texto secundario</string>
+    <string name="supporting_text">texto de la nota bla bla bla bla bla bla</string>
+    <string name="EditarHomeNote">Editar</string>
+    <string name="BorrarHomeNote">Borrar</string>
     <string name="floatingbutton" />
 </resources>

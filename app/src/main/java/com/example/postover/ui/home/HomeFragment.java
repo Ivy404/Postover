@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void AddNote(View view){
-        AddHomeNote.newInstance().show(getActivity().getSupportFragmentManager(),AddTodo.TAG);
+        AddHomeNote.newInstance().show(getActivity().getSupportFragmentManager(),AddHomeNote.TAG);
     }
 
     public void getList() {
