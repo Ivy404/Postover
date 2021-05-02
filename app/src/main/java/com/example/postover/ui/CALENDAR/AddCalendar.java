@@ -96,6 +96,7 @@ public class AddCalendar extends BottomSheetDialogFragment {
                 if(s.toString().equals("")){
                     newCalendarButton.setEnabled(false);
                     newCalendarButton.setTextColor(Color.GRAY);
+                    first[0] = false;
                 }
                 else{
                     first[0] = true;
@@ -120,6 +121,7 @@ public class AddCalendar extends BottomSheetDialogFragment {
                 if(s.toString().equals("")){
                     newCalendarButton.setEnabled(false);
                     newCalendarButton.setTextColor(Color.GRAY);
+                    second[0] = false;
                 }
                 else{
                     second[0] = true;

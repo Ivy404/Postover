@@ -55,7 +55,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         homeNotes = new ArrayList<>();
-        homeNotes.add(new HomeNote("Your First Note"));
         root.findViewById(R.id.home_fab).setOnClickListener(this::AddNote);
         mainAdapter = new MainAdapter(homeNotes, getActivity());
 

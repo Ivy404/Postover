@@ -124,7 +124,7 @@ public class ActivityLogin extends AppCompatActivity {
                                 Client cliente = new Client(user.getDisplayName(), user.getEmail());
 
                                 String id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                                if(mDatabase.child("users").child(id).getKey() == null){
+                                //if(mDatabase.child("users").child(id).getKey() == null){ // si se vuelve a logear con google se reinicia el usuario
                                     mDatabase.child("users").child(id).setValue(cliente).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task2) {
@@ -143,12 +143,13 @@ public class ActivityLogin extends AppCompatActivity {
                                             }
                                         }
                                     });
-                                }else{
+                                /*}else{
                                     Intent mainIntent = new Intent(ActivityLogin.this, MainActivity.class);
                                     mainIntent.putExtra("KeepLoged","KeepLoged");
                                     ActivityLogin.this.startActivity(mainIntent);
                                     ActivityLogin.this.finish();
-                                }
+                                }*/
+
                             }else{
                                 Toast.makeText(ActivityLogin.this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
                             }
