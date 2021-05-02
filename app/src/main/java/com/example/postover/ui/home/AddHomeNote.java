@@ -1,4 +1,4 @@
-package com.example.postover.ui.TODO;
+package com.example.postover.ui.home;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -20,7 +21,8 @@ import androidx.fragment.app.Fragment;
 
 
 import com.example.postover.Model.Client;
-import com.example.postover.Model.ToDoNote;
+import com.example.postover.Model.HomeNote;
+import com.example.postover.Model.HomeNote;
 import com.example.postover.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,50 +35,49 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddTodo extends BottomSheetDialogFragment {
+public class AddHomeNote extends BottomSheetDialogFragment {
 
     public static final String TAG = "ActionBottomDialog";
-    private EditText newTodoText;
-    private Button newTodoButton;
+    private EditText newHomeNoteText;
+    private Button newHomeNoteButton;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
 
-    public static AddTodo newInstance(){
-        return new AddTodo();
+    public static AddHomeNote newInstance(){
+        return new AddHomeNote();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_todo_new,container,false);
+        View view = inflater.inflate(R.layout.fragment_homenote_new,container,false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return view;
     }
 
     @Override
-     public void onViewCreated(View view, Bundle savedInstanceState){
+    public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view,savedInstanceState);
-        newTodoText = getView().findViewById(R.id.new_todo_text);
-        newTodoButton = getView().findViewById(R.id.new_todo_button);
-        newTodoButton.setEnabled(false);
+        newHomeNoteText = getView().findViewById(R.id.new_note_text);
+        newHomeNoteButton = getView().findViewById(R.id.new_note_button);
+        newHomeNoteButton.setEnabled(false);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        newTodoText.addTextChangedListener(new TextWatcher() {
+        newHomeNoteText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.toString().equals("")){
-                    newTodoButton.setEnabled(false);
-                    newTodoButton.setTextColor(Color.GRAY);
+                    newHomeNoteButton.setEnabled(false);
+                    newHomeNoteButton.setTextColor(Color.GRAY);
                 }
                 else{
-                    newTodoButton.setEnabled(true);
-                    newTodoButton.setTextColor(ContextCompat.getColor(getContext(),R.color.lightred));
+                    newHomeNoteButton.setEnabled(true);
+                    newHomeNoteButton.setTextColor(ContextCompat.getColor(getContext(),R.color.lightred));
                 }
             }
             @Override
@@ -85,7 +86,7 @@ public class AddTodo extends BottomSheetDialogFragment {
             }
         });
 
-        newTodoButton.setOnClickListener(new View.OnClickListener() {
+        newHomeNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String key = mDatabase.child("users").push().getKey();
@@ -97,14 +98,15 @@ public class AddTodo extends BottomSheetDialogFragment {
                         } else {
                             Log.d("firebase", String.valueOf(task.getResult().getValue()));
                             Client client = task.getResult().getValue(Client.class);
-                            List<ToDoNote> todoList;
-                            if(client.getTodoList() == null){
-                                 todoList = new ArrayList<>();
+                            List<HomeNote> homeNoteList;
+                            if(client.getHomeNoteList() == null){
+                                homeNoteList = new ArrayList<>();
                             }
                             else {
-                                 todoList = client.getTodoList();
+                                homeNoteList = client.getHomeNoteList();
                             }
-                            todoList.add(new ToDoNote(newTodoText.getText().toString()));
+                            homeNoteList.add(new HomeNote(newHomeNoteText.getText().toString()));
+                            Toast.makeText(getActivity(), String.valueOf(homeNoteList.size()), Toast.LENGTH_SHORT).show();
                             mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(client);
 
                         }

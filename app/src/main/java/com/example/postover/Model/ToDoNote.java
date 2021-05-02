@@ -13,6 +13,7 @@ public class ToDoNote extends Note{
         this.setTitle(title);
         this.completed = false;
     }
+    public ToDoNote(){}
     @Override
     public String getTitle() {
         return this.title;
@@ -38,14 +39,6 @@ public class ToDoNote extends Note{
         return this.creationDate;
     }
 
-    public void switchCompleted(){
-        this.completed = !this.completed;
-    }
-
-    public boolean getCompleted(){
-        return this.completed;
-    }
-
     @Override
     public void save() {
     //TODO
@@ -58,5 +51,4 @@ public class ToDoNote extends Note{
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
-
 }

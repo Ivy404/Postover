@@ -2,22 +2,55 @@ package com.example.postover.Model;
 
 import android.media.Image;
 
+import com.example.postover.R;
+import com.google.firebase.database.Exclude;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Client {
     private String name;
     private String username;
     private String mail;
     private String password;
-    private Image icon;
+    //private Image icon;
+    private List<ToDoNote> todoList;
+    private List<HomeNote> homeNoteList;
 
     public Client(String name, String password, String mail, String username) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.mail = mail;
-    }
+        todoList = new ArrayList<>();
+        homeNoteList = new ArrayList<>();
+        ToDoNote note = new ToDoNote("Your First Todo!");
+        HomeNote homeNote = new HomeNote("Your first HomeNote!");
+        todoList.add(note);
+        homeNoteList.add(homeNote);
 
+    }
+    public Client(){}
     public String getName() {
         return name;
+    }
+
+    public List<HomeNote> getHomeNoteList() {
+        return homeNoteList;
+    }
+
+    public void setHomeNoteList(List<HomeNote> homeNoteList) {
+        this.homeNoteList = homeNoteList;
+    }
+
+    public List<ToDoNote> getTodoList() {
+        return todoList;
+    }
+
+    public void setTodoList(List<ToDoNote> todoList) {
+        this.todoList = todoList;
     }
 
     public void setName(String name) {
@@ -47,4 +80,5 @@ public class Client {
     public void setUsername(String username) {
         this.username = username;
     }
+
 }

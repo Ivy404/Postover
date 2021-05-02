@@ -13,11 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.postover.MainActivity;
 import com.example.postover.Model.ToDoNote;
 import com.example.postover.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
-
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
     private List<ToDoNote> todoList;
     FragmentActivity mainActivity;
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -56,11 +59,12 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.task.setText(todoList.get(position).getTitle());
-        holder.task.setChecked(todoList.get(position).getCompleted());
+        holder.task.setChecked(todoList.get(position).isCompleted());
     }
 
     @Override
     public int getItemCount() {
+        if(todoList == null){return 0;}
        return  todoList.size();
     }
 }

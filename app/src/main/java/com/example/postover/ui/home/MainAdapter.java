@@ -8,48 +8,52 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.postover.Model.HomeNote;
+import com.example.postover.Model.ToDoNote;
 import com.example.postover.R;
+
+import java.util.List;
 
 public class MainAdapter extends BaseAdapter {
 
-    Context context;
-    LayoutInflater inflater;
-    String [] number;
-    int [] numberimage;
+    private final Context mContext;
+    private List<HomeNote> notes;
 
-
-    public MainAdapter(Context context, LayoutInflater inflater, String[] number,int[] numberimage) {
-        this.context = context;
-        this.inflater = inflater;
-        this.number = number;
-        this.numberimage = numberimage;
+    // 1
+    public MainAdapter(Context context, List<HomeNote> notes) {
+        this.mContext = context;
+        this.notes = notes;
     }
 
+    // 2
     @Override
     public int getCount() {
-        return number.length;
+        return notes.size();
     }
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
+    // 3
     @Override
     public long getItemId(int position) {
         return 0;
     }
 
+    // 4
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    // 5
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(inflater==null) inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        if (convertView==null) convertView = inflater.inflate(R.layout.row_item,null);
-
-        ImageView imageView = convertView.findViewById(R.id.imageView2);
-        imageView.setImageResource(numberimage[position]);
-        TextView textView= convertView.findViewById(R.id.textView2);
-        textView.setText(number[position]);
-        return convertView;
+        TextView dummyTextView = new TextView(mContext);
+        dummyTextView.setText(this.notes.get(position).getTitle());
+        return dummyTextView;
     }
+
+    public void setHomeNotes(List<HomeNote> dataSet) {
+        notes = dataSet;
+        notifyDataSetChanged();
+    }
+
 }
