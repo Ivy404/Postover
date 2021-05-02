@@ -64,16 +64,12 @@ public class ActivityRegister extends AppCompatActivity {
 
                 if (!name.isEmpty() && !email.isEmpty() && !username.isEmpty() && !password.isEmpty()) {
                     if (password.length() >= 6) {
-                        boolean completed = registerNewUser();
-                        if(completed) {
-                            Intent mainIntent = new Intent(ActivityRegister.this, MainActivity.class);
-                            ActivityRegister.this.startActivity(mainIntent);
-                            ActivityRegister.this.finish();
-                        }else{
-                            Intent mainIntent = new Intent(ActivityRegister.this, ActivityRegister.class);
-                            ActivityRegister.this.startActivity(mainIntent);
-                            ActivityRegister.this.finish();
-                        }
+                        registerNewUser();
+
+
+
+
+
                     } else {
                         Toast.makeText(ActivityRegister.this, "Error! Password isn't strong enough", Toast.LENGTH_SHORT).show();
                     }
@@ -120,8 +116,8 @@ public class ActivityRegister extends AppCompatActivity {
                 });
     }
 
-    private boolean registerNewUser() {
-        boolean[] completed = new boolean[1];
+    private void registerNewUser() {
+
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -133,21 +129,28 @@ public class ActivityRegister extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task2) {
                             if (task2.isSuccessful()) {
                                 Toast.makeText(ActivityRegister.this, "Success! User added", Toast.LENGTH_LONG).show();
-                                completed[0] = true;
+                                Intent mainIntent = new Intent(ActivityRegister.this, MainActivity.class);
+                                mainIntent.putExtra("KeepLoged","KeepLoged");
+                                ActivityRegister.this.startActivity(mainIntent);
+                                ActivityRegister.this.finish();
                             } else {
                                 Toast.makeText(ActivityRegister.this, "Error! User could not be created", Toast.LENGTH_SHORT).show();
                                 mDatabase.child("users").child(id).removeValue();
-                                completed[0] = false;
+                                Intent mainIntent = new Intent(ActivityRegister.this, ActivityRegister.class);
+                                ActivityRegister.this.startActivity(mainIntent);
+                                ActivityRegister.this.finish();
                             }
                         }
                     });
                 } else {
                     Toast.makeText(ActivityRegister.this, "Error! Something went wrong", Toast.LENGTH_SHORT).show();
-                    completed[0] = false;
+                    Intent mainIntent = new Intent(ActivityRegister.this, ActivityRegister.class);
+                    ActivityRegister.this.startActivity(mainIntent);
+                    ActivityRegister.this.finish();
                 }
             }
         });
-        return completed[0];
+
     }
 }
 

@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 createFragments();
             }
         }catch (NullPointerException e){
-            createFragments();
+            //createFragments();
         }
     }
     public void signOut(View v){
