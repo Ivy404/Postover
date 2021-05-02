@@ -107,7 +107,6 @@ public class AddHomeNote extends BottomSheetDialogFragment {
                                 homeNoteList = client.getHomeNoteList();
                             }
                             homeNoteList.add(new HomeNote(newHomeNoteText.getText().toString()));
-                            Toast.makeText(getActivity(), String.valueOf(homeNoteList.size()), Toast.LENGTH_SHORT).show();
                             mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(client);
 
                         }
