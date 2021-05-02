@@ -24,6 +24,7 @@ import com.example.postover.Model.Client;
 import com.example.postover.Model.HomeNote;
 import com.example.postover.Model.HomeNote;
 import com.example.postover.R;
+import com.example.postover.ui.DialogCloseListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -89,7 +90,7 @@ public class AddHomeNote extends BottomSheetDialogFragment {
         newHomeNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String key = mDatabase.child("users").push().getKey();
+                //get client
                 mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -125,7 +126,7 @@ public class AddHomeNote extends BottomSheetDialogFragment {
     public void onDismiss(DialogInterface dialog) {
         Activity activity = getActivity();
         if (activity instanceof DialogCloseListener) {
-            ((DialogCloseListener) activity).handleDialogClose(dialog);
+            ((DialogCloseListener) activity).handleDialogClose(dialog,"HomeNote");
         }
     }
 

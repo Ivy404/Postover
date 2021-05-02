@@ -12,10 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.postover.Model.Client;
-import com.example.postover.Model.ToDoNote;
+import com.example.postover.Model.HomeNote;
 import com.example.postover.SlideFragments.AdapterSlide;
 import com.example.postover.ui.ActivityRegister;
-import com.example.postover.ui.TODO.DialogCloseListener;
+import com.example.postover.ui.DialogCloseListener;
 import com.example.postover.ui.TODO.TodoFragment;
 import com.example.postover.ui.home.HomeFragment;
 import com.example.postover.ui.slideshow.CalendarFragment;
@@ -41,8 +41,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private EditText loginMail, loginPassword;
     private String mailLogin, passwordLogin;
     private TodoFragment todoFragment;
+    private HomeFragment homeFragment;
+    private CalendarFragment calendarFragment;
+
 
     //cositas del firebase
     private DatabaseReference mDatabase;
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 createFragments();
             }
         }catch (NullPointerException e){
-            //createFragments();
+
         }
 
 
@@ -108,7 +109,9 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         List<Fragment> fragmentList = new ArrayList<>();
         todoFragment = new TodoFragment();
         fragmentList.add(todoFragment);
-        fragmentList.add(new HomeFragment());
+        homeFragment = new HomeFragment();
+        fragmentList.add(homeFragment);
+        calendarFragment =new CalendarFragment();
         fragmentList.add(new CalendarFragment());
         AdapterSlide adapter = new AdapterSlide(getSupportFragmentManager(), getLifecycle(), fragmentList);
         ViewPager2 viewPager2 = findViewById(R.id.view_pager2);
@@ -233,9 +236,18 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         });
     }
     @Override
-    public void handleDialogClose(DialogInterface dialog) {
-        todoFragment.getList();
+    public void handleDialogClose(DialogInterface dialog,String note) {
+       switch (note){
+           case "Todo":
+               todoFragment.getList();
+               break;
+           case "HomeNote":
+                homeFragment.getList();
+               break;
+           case "CalendarNote":
+               break;
 
+       }
     }
 
 }
