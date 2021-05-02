@@ -87,7 +87,7 @@ public class ActivityRegister extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 registerGuestUser();
-                Intent mainIntent = new Intent(ActivityRegister.this, ActivityLogin.class);
+                Intent mainIntent = new Intent(ActivityRegister.this, MainActivity.class);
                 ActivityRegister.this.finish();
                 ActivityRegister.this.startActivity(mainIntent);
 
