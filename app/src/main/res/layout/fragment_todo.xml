@@ -7,6 +7,17 @@
     android:background="@drawable/background"
     android:scaleType="centerCrop"
     tools:context=".ui.TODO.TodoFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_toolbarTodo"
+        android:text="TODO"
+        android:textSize="40dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/todoRecyclerView"
         android:layout_width="match_parent"
