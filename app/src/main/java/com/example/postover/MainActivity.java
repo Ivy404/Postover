@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         try {
             if (getIntent().getExtras().getString("Login") != null) {
-                View v = new View(getApplicationContext());
                 Intent intent = new Intent(MainActivity.this, ActivityLogin.class);
                 MainActivity.this.finish();
                 MainActivity.this.startActivity(intent);
@@ -186,58 +185,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 || super.onSupportNavigateUp();
     }
 
-    public void createLoginDialog(View v) {
-        // TextView register = findViewById(R.id.tv_register);
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setCancelable(false);
-        final View loginPopupView = getLayoutInflater().inflate(R.layout.popup_login, null);
-        Button login = (Button) loginPopupView.findViewById(R.id.btn_login);
-        TextView register = loginPopupView.findViewById(R.id.tv_register);
-        Button googleLogin = loginPopupView.findViewById(R.id.google_login);
-        loginMail = (EditText) loginPopupView.findViewById(R.id.pt_username);
-        loginPassword = (EditText) loginPopupView.findViewById(R.id.pt_password);
 
-        dialogBuilder.setView(loginPopupView);
-        dialog = dialogBuilder.create();
-        dialog.show();
-
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mailLogin = loginMail.getText().toString();
-                passwordLogin = loginPassword.getText().toString();
-                if(mailLogin.length()>0 && passwordLogin.length()>0){
-                    loginUser();
-                }else{
-                    Toast.makeText(MainActivity.this, "Cannot be empty!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mainIntent = new Intent(MainActivity.this, ActivityRegister.class);
-                MainActivity.this.startActivity(mainIntent);
-                MainActivity.this.finish();
-            }
-        });
-
-        googleLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build();
-                GoogleSignInClient googleClient = GoogleSignIn.getClient(MainActivity.this, gso);
-                googleClient.signOut();
-
-                startActivityForResult(googleClient.getSignInIntent(), GOOGLE_SIGN_IN);
-            }
-        });
-
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

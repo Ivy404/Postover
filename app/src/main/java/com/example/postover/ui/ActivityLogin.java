@@ -39,7 +39,7 @@ public class ActivityLogin extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     public FirebaseUser user;
-    Intent activityIntent = new Intent(ActivityLogin.this, MainActivity.class);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,8 +133,10 @@ public class ActivityLogin extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     user = mAuth.getCurrentUser();
                     Toast.makeText(ActivityLogin.this, "Success! login completed", Toast.LENGTH_SHORT).show();
-                    finish();
-                    startActivity(activityIntent);
+                    Intent activityIntent = new Intent(ActivityLogin.this, MainActivity.class);
+                    activityIntent.putExtra("KeepLoged","KeepLoged");
+                    ActivityLogin.this.finish();
+                    ActivityLogin.this.startActivity(activityIntent);
                 } else {
                     Toast.makeText(ActivityLogin.this, "Error! These credentials do not match our records", Toast.LENGTH_SHORT).show();
                 }
