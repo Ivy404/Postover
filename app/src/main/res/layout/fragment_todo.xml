@@ -7,23 +7,11 @@
     android:background="@drawable/background"
     android:scaleType="centerCrop"
     tools:context=".ui.TODO.TodoFragment">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/todoText"
-        android:textStyle="bold"
-        android:text="Todo List"
-        android:textColor="@color/black"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:textSize="32dp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
+        android:layout_marginTop="65dp"
         android:layout_height="wrap_content"
         android:id="@+id/todoRecyclerView"
-        android:layout_below="@id/todoText"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:nestedScrollingEnabled="true"/>
 

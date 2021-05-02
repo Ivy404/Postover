@@ -15,21 +15,16 @@ import java.util.Map;
 
 public class Client {
     private String name;
-    private String username;
     private String mail;
-    private String password;
     //private Image icon;
     private List<ToDoNote> todoList;
     private List<HomeNote> homeNoteList;
 
     private HashMap<String,List<CalendarNote>> hashCalendar;
 
-    public Client(String name, String password, String mail, String username) {
+    public Client(String name, String mail) {
         this.name = name;
-        this.username = username;
-        this.password = password;
         this.mail = mail;
-
         todoList = new ArrayList<>();
         homeNoteList = new ArrayList<>();
         hashCalendar = new HashMap<>();
@@ -42,9 +37,7 @@ public class Client {
         homeNoteList.add(homeNote);
 
 
-        CalendarNote calendarNote = new CalendarNote("Second Calendar","Information", Calendar.getInstance().getTime());
-        calendarNotes.add(calendarNote);
-        calendarNote = new CalendarNote("Second Calendar","Information", Calendar.getInstance().getTime());
+        CalendarNote calendarNote = new CalendarNote("First Calendar","Information", Calendar.getInstance().getTime());
         calendarNotes.add(calendarNote);
 
         hashCalendar.put(calendarNote.getDate().toString().substring(8,10),calendarNotes);
@@ -93,20 +86,6 @@ public class Client {
         this.mail = mail;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
 }

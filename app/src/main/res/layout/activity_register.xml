@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="230dp"
-            android:text="Sign in"
+            android:text="@string/Register"
             android:textColor="#BA0000"
             android:textSize="24sp"
 
@@ -46,16 +46,6 @@
             android:layout_gravity="center"
             android:ems="10"
             android:hint="Name"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/pt_usernameRegister"
-            android:layout_width="326dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="10"
-            android:hint="@string/Username"
-
             android:inputType="textPersonName" />
 
         <EditText

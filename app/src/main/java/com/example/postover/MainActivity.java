@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         mAuth = FirebaseAuth.getInstance();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     }
     public void signOut(View v){
         mAuth.signOut();
-        Intent mainIntent = new Intent(MainActivity.this, ActivityRegister.class);
+        Intent mainIntent = new Intent(MainActivity.this, ActivityLogin.class);
         MainActivity.this.startActivity(mainIntent);
         MainActivity.this.finish();
     }
