@@ -12,13 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.postover.Model.Client;
-import com.example.postover.Model.HomeNote;
 import com.example.postover.SlideFragments.AdapterSlide;
 import com.example.postover.ui.ActivityRegister;
 import com.example.postover.ui.DialogCloseListener;
 import com.example.postover.ui.TODO.TodoFragment;
 import com.example.postover.ui.home.HomeFragment;
-import com.example.postover.ui.slideshow.CalendarFragment;
+import com.example.postover.ui.CALENDAR.CalendarFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

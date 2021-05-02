@@ -54,6 +54,14 @@ public class Client {
         return todoList;
     }
 
+    public List<CalendarNote> getCalendarNotes() {
+        return calendarNotes;
+    }
+
+    public void setCalendarNotes(List<CalendarNote> calendarNotes) {
+        this.calendarNotes = calendarNotes;
+    }
+
     public void setTodoList(List<ToDoNote> todoList) {
         this.todoList = todoList;
     }

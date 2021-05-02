@@ -1,4 +1,4 @@
-package com.example.postover.ui.slideshow;
+package com.example.postover.ui.CALENDAR;
 
 public class calendarInformation {
     String mainInfo,subInfo;

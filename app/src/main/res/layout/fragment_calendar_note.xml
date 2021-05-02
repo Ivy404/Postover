@@ -14,11 +14,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
+        <TextView
             android:id="@+id/day_calendar_text"
             android:layout_width="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_height="wrap_content"
-            android:text="MON 8" />
+            android:textSize="15dp"
+            android:text="MON" />
+        <TextView
+            android:id="@+id/num_calendar_text"
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/day_calendar_text"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="08" />
 
         <include
             android:id="@+id/include"

@@ -1,23 +1,22 @@
-package com.example.postover.ui.slideshow;
+package com.example.postover.ui.CALENDAR;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.postover.Model.ToDoNote;
+import com.example.postover.Model.CalendarNote;
 import com.example.postover.R;
-import com.example.postover.ui.TODO.TodoAdapter;
+
 
 import java.util.List;
 
-public class InformationCalendarRecyclerView extends RecyclerView.Adapter<InformationCalendarRecyclerView.ViewHolder> {
-    private List<calendarInformation> calendarlistinfo;
+public class InformationCalendarViewAdapter extends RecyclerView.Adapter<InformationCalendarViewAdapter.ViewHolder> {
+    private List<CalendarNote> calendarlistinfo;
     FragmentActivity mainActivity;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -35,28 +34,28 @@ public class InformationCalendarRecyclerView extends RecyclerView.Adapter<Inform
     }
 }
 
-    public InformationCalendarRecyclerView(FragmentActivity mainActivity) {
+    public InformationCalendarViewAdapter(FragmentActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
 
-    public void setTodoList(List<calendarInformation> dataSet) {
+    public void setTodoList(List<CalendarNote> dataSet) {
         calendarlistinfo = dataSet;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public InformationCalendarRecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public InformationCalendarViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_information_calendar, parent, false);
-        return new InformationCalendarRecyclerView.ViewHolder(view);
+        return new InformationCalendarViewAdapter.ViewHolder(view);
     }
 
 
     @Override
-    public void onBindViewHolder(@NonNull InformationCalendarRecyclerView.ViewHolder holder, int position) {
-        holder.calendarInfo.setText(calendarlistinfo.get(position).getMainInfo());
-        holder.calendarSubInfo.setText(calendarlistinfo.get(position).getSubInfo());
+    public void onBindViewHolder(@NonNull InformationCalendarViewAdapter.ViewHolder holder, int position) {
+        holder.calendarInfo.setText(calendarlistinfo.get(position).getTitle());
+        holder.calendarSubInfo.setText(calendarlistinfo.get(position).getSubtitle());
     }
 
     @Override

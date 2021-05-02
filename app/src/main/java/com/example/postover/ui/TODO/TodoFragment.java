@@ -44,6 +44,7 @@ public class TodoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_todo, container, false);
         todoList = new ArrayList<>();
+
         recyclerView = root.findViewById(R.id.todoRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         todoAdapter = new TodoAdapter(getActivity());
