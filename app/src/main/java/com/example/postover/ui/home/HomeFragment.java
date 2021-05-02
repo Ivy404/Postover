@@ -56,7 +56,6 @@ public class HomeFragment extends Fragment {
         homeNotes = new ArrayList<>();
         root.findViewById(R.id.home_fab).setOnClickListener(this::AddNote);
 
-
         gridView = root.findViewById(R.id.grid_view);
         mainAdapter = new MainAdapter(getActivity(), homeNotes);
         gridView.setAdapter(mainAdapter);
