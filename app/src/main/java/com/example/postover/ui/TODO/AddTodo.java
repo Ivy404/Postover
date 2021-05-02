@@ -88,7 +88,6 @@ public class AddTodo extends BottomSheetDialogFragment {
         newTodoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String key = mDatabase.child("users").push().getKey();
                 mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {

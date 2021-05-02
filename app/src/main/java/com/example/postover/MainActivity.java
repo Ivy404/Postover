@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         homeFragment = new HomeFragment();
         fragmentList.add(homeFragment);
         calendarFragment =new CalendarFragment();
-        fragmentList.add(new CalendarFragment());
+        fragmentList.add(calendarFragment);
         AdapterSlide adapter = new AdapterSlide(getSupportFragmentManager(), getLifecycle(), fragmentList);
         ViewPager2 viewPager2 = findViewById(R.id.view_pager2);
         viewPager2.setAdapter(adapter);
@@ -248,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 homeFragment.getList();
                break;
            case "CalendarNote":
+               calendarFragment.getList();
                break;
 
        }
