@@ -42,6 +42,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -55,7 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements DialogCloseListener {
+public class MainActivity extends AppCompatActivity  implements DialogCloseListener {
 
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -238,6 +239,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         });
     }
 
+
     @Override
     public void handleDialogClose(DialogInterface dialog,String note) {
        switch (note){
@@ -253,5 +255,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
        }
     }
+
 
 }

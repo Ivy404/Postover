@@ -10,7 +10,7 @@
         android:layout_width="277dp"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:hint="New Todo"
+        android:hint="New Calendar Note"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
     <EditText
         android:id="@+id/new_calendar_text_sub"

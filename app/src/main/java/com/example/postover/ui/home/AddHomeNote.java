@@ -39,7 +39,7 @@ import java.util.List;
 public class AddHomeNote extends BottomSheetDialogFragment {
 
     public static final String TAG = "ActionBottomDialog";
-    private EditText newHomeNoteText;
+    private EditText newHomeNoteText,newhomeNotesub;
     private Button newHomeNoteButton;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -60,6 +60,7 @@ public class AddHomeNote extends BottomSheetDialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view,savedInstanceState);
         newHomeNoteText = getView().findViewById(R.id.new_note_text);
+        newhomeNotesub = getView().findViewById(R.id.new_home_sub);
         newHomeNoteButton = getView().findViewById(R.id.new_note_button);
         newHomeNoteButton.setEnabled(false);
 
@@ -106,7 +107,9 @@ public class AddHomeNote extends BottomSheetDialogFragment {
                             else {
                                 homeNoteList = client.getHomeNoteList();
                             }
-                            homeNoteList.add(new HomeNote(newHomeNoteText.getText().toString()));
+                            HomeNote homeNote = new HomeNote(newHomeNoteText.getText().toString());
+                            homeNote.setText(newhomeNotesub.getText().toString());
+                            homeNoteList.add(homeNote);
                             mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(client);
 
                         }

@@ -58,8 +58,13 @@ public class HomeFragment extends Fragment {
         homeNotes.add(new HomeNote("Your First Note"));
         root.findViewById(R.id.home_fab).setOnClickListener(this::AddNote);
         mainAdapter = new MainAdapter(homeNotes, getActivity());
+
+
         reciclerView = root.findViewById(R.id.homeRecyclerView);
-        reciclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        int spacingInPixels = 16;
+        reciclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
+        reciclerView.setLayoutManager(manager);
         reciclerView.setAdapter(mainAdapter);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
