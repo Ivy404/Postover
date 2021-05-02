@@ -38,6 +38,7 @@ public class Client {
 
     }
     public Client(){}
+
     public String getName() {
         return name;
     }
@@ -52,6 +53,14 @@ public class Client {
 
     public List<ToDoNote> getTodoList() {
         return todoList;
+    }
+
+    public List<CalendarNote> getCalendarNotes() {
+        return calendarNotes;
+    }
+
+    public void setCalendarNotes(List<CalendarNote> calendarNotes) {
+        this.calendarNotes = calendarNotes;
     }
 
     public void setTodoList(List<ToDoNote> todoList) {

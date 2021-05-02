@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,7 @@ import com.example.postover.ui.ActivityRegister;
 import com.example.postover.ui.DialogCloseListener;
 import com.example.postover.ui.TODO.TodoFragment;
 import com.example.postover.ui.home.HomeFragment;
-import com.example.postover.ui.slideshow.CalendarFragment;
+import com.example.postover.ui.CALENDAR.CalendarFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -165,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                     nameNavHead.setText(client.getName());
                     TextView emailNavHead = (TextView) findViewById(R.id.emailNavhead);
                     emailNavHead.setText(client.getMail());
+
                 }
             }
         });
