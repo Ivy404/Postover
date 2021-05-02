@@ -25,21 +25,17 @@ public class InformationCalendarViewAdapter extends RecyclerView.Adapter<Informa
     public ViewHolder(View view) {
         super(view);
         calendarInfo = view.findViewById(R.id.calendar_info_text);
-        calendarSubInfo = view.findViewById(R.id.calendar_info_text);
+        calendarSubInfo = view.findViewById(R.id.calendar_subInfo);
 
     }
-
     public TextView getTextView() {
         return calendarInfo;
     }
 }
+    public InformationCalendarViewAdapter() {
 
-    public InformationCalendarViewAdapter(FragmentActivity mainActivity) {
-        this.mainActivity = mainActivity;
     }
-
-
-    public void setTodoList(List<CalendarNote> dataSet) {
+    public void setinformationlist(List<CalendarNote> dataSet) {
         calendarlistinfo = dataSet;
         notifyDataSetChanged();
     }

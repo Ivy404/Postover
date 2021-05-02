@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
-
     android:id="@+id/calendar_card"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
@@ -12,12 +11,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp">
+
 
         <TextView
             android:id="@+id/day_calendar_text"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="5dp"
             android:layout_height="wrap_content"
             android:textSize="15dp"
             android:text="MON" />
@@ -25,22 +25,24 @@
             android:id="@+id/num_calendar_text"
             android:layout_width="wrap_content"
             android:layout_below="@+id/day_calendar_text"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:layout_height="wrap_content"
             android:textSize="15dp"
             android:text="08" />
 
-        <include
-            android:id="@+id/include"
-            layout="@layout/fragment_recycler_viewcalendar"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerviewinfo"
             android:layout_width="330dp"
-            android:layout_height="145dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="49dp"
-            android:layout_marginEnd="3dp"
-            android:layout_marginRight="3dp" />
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="18dp"
+            android:nestedScrollingEnabled="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
     </RelativeLayout>

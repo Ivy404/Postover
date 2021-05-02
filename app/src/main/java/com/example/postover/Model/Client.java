@@ -2,6 +2,8 @@ package com.example.postover.Model;
 
 import android.media.Image;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.postover.R;
 import com.google.firebase.database.Exclude;
 
@@ -19,22 +21,33 @@ public class Client {
     //private Image icon;
     private List<ToDoNote> todoList;
     private List<HomeNote> homeNoteList;
-    private List<CalendarNote> calendarNotes;
+
+    private HashMap<String,List<CalendarNote>> hashCalendar;
 
     public Client(String name, String password, String mail, String username) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.mail = mail;
+
         todoList = new ArrayList<>();
         homeNoteList = new ArrayList<>();
-        calendarNotes = new ArrayList<>();
+        hashCalendar = new HashMap<>();
+
+        List<CalendarNote> calendarNotes = new ArrayList<>();
         ToDoNote note = new ToDoNote("Your First Todo!");
-        HomeNote homeNote = new HomeNote("Your first HomeNote!");
-        CalendarNote calendarNote = new CalendarNote("First Calendar","Information", Calendar.getInstance().getTime());
         todoList.add(note);
+
+        HomeNote homeNote = new HomeNote("Your first HomeNote!");
         homeNoteList.add(homeNote);
+
+
+        CalendarNote calendarNote = new CalendarNote("Second Calendar","Information", Calendar.getInstance().getTime());
         calendarNotes.add(calendarNote);
+        calendarNote = new CalendarNote("Second Calendar","Information", Calendar.getInstance().getTime());
+        calendarNotes.add(calendarNote);
+
+        hashCalendar.put(calendarNote.getDate().toString().substring(8,10),calendarNotes);
 
     }
     public Client(){}
@@ -54,12 +67,13 @@ public class Client {
         return todoList;
     }
 
-    public List<CalendarNote> getCalendarNotes() {
-        return calendarNotes;
+
+    public HashMap<String, List<CalendarNote>> getHashCalendar() {
+        return hashCalendar;
     }
 
-    public void setCalendarNotes(List<CalendarNote> calendarNotes) {
-        this.calendarNotes = calendarNotes;
+    public void setHashCalendar(HashMap<String, List<CalendarNote>> hashCalendar) {
+        this.hashCalendar = hashCalendar;
     }
 
     public void setTodoList(List<ToDoNote> todoList) {

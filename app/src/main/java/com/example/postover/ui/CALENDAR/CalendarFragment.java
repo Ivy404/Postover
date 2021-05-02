@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 public class CalendarFragment extends Fragment {
@@ -54,16 +55,10 @@ public class CalendarFragment extends Fragment {
         });
         CalendarView calendarView = root.findViewById(R.id.calendarView);
 
-        /*informationView = root.findViewById(R.id.recyclerviewinfo);
-        informationView.setLayoutManager(new LinearLayoutManager(getContext()));
-        informationCalendarViewAdapter = new InformationCalendarViewAdapter(getActivity());
-        informationView.setAdapter(informationCalendarViewAdapter);*/
-
         recyclerView = root.findViewById(R.id.calendarRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         calendarAdapter = new CalendarAdapter(getActivity());
         recyclerView.setAdapter(calendarAdapter);
-
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -74,6 +69,7 @@ public class CalendarFragment extends Fragment {
                     addCalendarNote(view,year,month,dayOfMonth);
             }
         });
+
         getList();
         return root;
     }
@@ -138,12 +134,12 @@ public class CalendarFragment extends Fragment {
                 } else {
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                     Client client = task.getResult().getValue(Client.class);
-                    List<CalendarNote> calendarNotes;
-                    if(client.getCalendarNotes() == null){
-                        calendarNotes = new ArrayList<>();
+                    HashMap<String,List<CalendarNote>> calendarNotes;
+                    if(client.getHashCalendar() == null){
+                        calendarNotes = new HashMap<>();
                     }
                     else {
-                        calendarNotes = client.getCalendarNotes();
+                        calendarNotes = client.getHashCalendar();
                     }
                     //informationCalendarViewAdapter.setTodoList(calendarNotes);
                     calendarAdapter.setTodoList(calendarNotes);

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,11 @@ import com.example.postover.ui.DialogCloseListener;
 import com.example.postover.ui.TODO.TodoFragment;
 import com.example.postover.ui.home.HomeFragment;
 import com.example.postover.ui.CALENDAR.CalendarFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -186,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         final View loginPopupView = getLayoutInflater().inflate(R.layout.popup_login, null);
         Button login = (Button) loginPopupView.findViewById(R.id.btn_login);
         TextView register = loginPopupView.findViewById(R.id.tv_register);
-        Button googleLogin = loginPopupView.findViewById(R.id.google_login);
+        ImageView googleLogin = loginPopupView.findViewById(R.id.google_login);
         loginMail = (EditText) loginPopupView.findViewById(R.id.pt_username);
         loginPassword = (EditText) loginPopupView.findViewById(R.id.pt_password);
 

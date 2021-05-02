@@ -25,7 +25,6 @@ android:orientation="vertical"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="2dp"
         android:layout_marginRight="2dp"
-        android:text="CALENDAR NOTE"
         android:textSize="15dp"
 
         />
@@ -34,7 +33,6 @@ android:orientation="vertical"
         android:id="@+id/calendar_subInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Subinformation"
         android:textSize="10dp" />
 </LinearLayout>
 
