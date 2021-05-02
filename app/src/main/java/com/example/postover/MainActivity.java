@@ -3,6 +3,7 @@ package com.example.postover;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.postover.Model.Client;
+import com.example.postover.Model.ToDoNote;
 import com.example.postover.SlideFragments.AdapterSlide;
 import com.example.postover.ui.ActivityRegister;
 import com.example.postover.ui.TODO.DialogCloseListener;
@@ -22,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -37,6 +40,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
+
         try {
             if (getIntent().getExtras().getString("Login") != null) {
                 View v = new View(getApplicationContext());
@@ -89,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         }catch (NullPointerException e){
             //createFragments();
         }
+
+
     }
     public void signOut(View v){
         mAuth.signOut();
@@ -127,6 +135,25 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             @Override
             public void onClick(View v) {
                 viewPager2.setCurrentItem(2);
+            }
+        });
+        updateNav();
+    }
+    public void updateNav(){
+        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                } else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    Client client = task.getResult().getValue(Client.class);
+                    TextView nameNavHead = (TextView) findViewById(R.id.name_navhead);
+                    nameNavHead.setText(client.getName());
+                    TextView emailNavHead = (TextView) findViewById(R.id.emailNavhead);
+                    emailNavHead.setText(client.getMail());
+
+                }
             }
         });
     }
@@ -194,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                     user = mAuth.getCurrentUser();
+                    user = mAuth.getCurrentUser();
                     Toast.makeText(MainActivity.this, "Success! login completed", Toast.LENGTH_SHORT).show();
                     createFragments();
                     dialog.dismiss();
