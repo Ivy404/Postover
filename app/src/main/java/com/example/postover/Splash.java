@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.example.postover.ui.ActivityLogin;
 import com.example.postover.ui.ActivityRegister;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -38,7 +39,7 @@ public class Splash extends Activity {
                 @Override
                 public void run() {
                     /* Create an Intent that will start the Menu-Activity. */
-                    Intent mainIntent = new Intent(Splash.this, ActivityRegister.class);
+                    Intent mainIntent = new Intent(Splash.this, ActivityLogin.class);
                     Splash.this.startActivity(mainIntent);
                     Splash.this.finish();
                 }

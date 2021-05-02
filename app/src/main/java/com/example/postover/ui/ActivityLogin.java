@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.postover.MainActivity;
+import com.example.postover.Model.Client;
 import com.example.postover.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -30,6 +31,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 public class ActivityLogin extends AppCompatActivity {
     private EditText loginMail, loginPassword;
@@ -85,11 +88,13 @@ public class ActivityLogin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestIdToken("1031976145011-f922paqe06o95756njnsv9mkvtc50n5v.apps.googleusercontent.com")
                         .requestEmail()
                         .build();
+
                 GoogleSignInClient googleClient = GoogleSignIn.getClient(ActivityLogin.this, gso);
-                googleClient.signOut();
+
+                //googleClient.signOut();
 
                 startActivityForResult(googleClient.getSignInIntent(), GOOGLE_SIGN_IN);
             }
@@ -109,11 +114,33 @@ public class ActivityLogin extends AppCompatActivity {
 
                 if(account != null){
                     AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
+
                     FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-                                //Datos realetime database
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Client cliente = new Client(user.getDisplayName(), user.getEmail());
+
+                                String id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+                                mDatabase.child("users").child(id).setValue(cliente).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task2) {
+                                        if (task2.isSuccessful()) {
+                                            Toast.makeText(ActivityLogin.this, "Success! User added", Toast.LENGTH_LONG).show();
+                                            Intent mainIntent = new Intent(ActivityLogin.this, MainActivity.class);
+                                            mainIntent.putExtra("KeepLoged","KeepLoged");
+                                            ActivityLogin.this.startActivity(mainIntent);
+                                            ActivityLogin.this.finish();
+                                        } else {
+                                            Toast.makeText(ActivityLogin.this, "Error! User could not be created", Toast.LENGTH_SHORT).show();
+                                            mDatabase.child("users").child(id).removeValue();
+                                            Intent mainIntent = new Intent(ActivityLogin.this, ActivityLogin.class);
+                                            ActivityLogin.this.startActivity(mainIntent);
+                                            ActivityLogin.this.finish();
+                                        }
+                                    }
+                                });
                             }else{
                                 Toast.makeText(ActivityLogin.this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
                             }
@@ -121,6 +148,7 @@ public class ActivityLogin extends AppCompatActivity {
                     });
                 }
             } catch (ApiException e) {
+                System.out.println(e.getMessage());
                 Toast.makeText(this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
             }
         }

@@ -46,7 +46,6 @@ public class ActivityRegister extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         EditText editTextUsername, editTextPassword, editTextEmail, editTextName;
-        editTextUsername = (EditText) findViewById(R.id.pt_usernameRegister);
         editTextName = (EditText) findViewById(R.id.pt_fullnameRegister);
         editTextPassword = (EditText) findViewById(R.id.pt_TextPassword);
         editTextEmail = (EditText) findViewById(R.id.pt_mailRegister);
@@ -60,7 +59,6 @@ public class ActivityRegister extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 name = editTextName.getText().toString();
-                username = editTextUsername.getText().toString();
                 password = editTextPassword.getText().toString();
                 email = editTextEmail.getText().toString();
 
@@ -116,7 +114,7 @@ public class ActivityRegister extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Client cliente = new Client(name, password, email, username);
+                    Client cliente = new Client(name, email);
                     String id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
                     mDatabase.child("users").child(id).setValue(cliente).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
