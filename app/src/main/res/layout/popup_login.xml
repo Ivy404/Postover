@@ -10,30 +10,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteX="74dp"
         tools:layout_editor_absoluteY="0dp">
 
         <TextView
             android:id="@+id/tv_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:gravity="center"
             android:text="@string/login"
-            android:textSize="40dp"
-            android:textStyle="bold" />
+            android:textSize="40sp" />
 
         <EditText
             android:id="@+id/pt_username"
-            android:layout_width="match_parent"
+            android:layout_width="236dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
             android:ems="10"
-            android:hint="@string/mail"
+            android:hint="@string/prompt_email"
             android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/pt_password"
-            android:layout_width="match_parent"
+            android:layout_width="236dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:ems="10"
             android:hint="@string/Password"
             android:inputType="textPassword" />
@@ -46,6 +49,52 @@
             android:text="@string/Forgot_password"
 
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/loginwith_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="or log in with"
+            android:textStyle="italic" />
+
+        <ImageView
+            android:id="@+id/google_login"
+            android:layout_width="213dp"
+            android:scaleType="centerCrop"
+            android:cropToPadding="true"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="#000000"
+            android:padding="1dp"
+            app:srcCompat="@drawable/googlelogo" />
+
+        <ImageView
+            android:id="@+id/twitteR_login"
+            android:layout_width="212dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="#000000"
+            android:cropToPadding="true"
+            android:padding="1dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/vhsu5kyel9x9bzz4hxw" />
+
+        <ImageView
+            android:id="@+id/facebook_login"
+            android:layout_width="212dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="#000000"
+            android:cropToPadding="true"
+            android:padding="1dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/facebooklogin" />
 
         <Button
             android:id="@+id/btn_login"
@@ -63,7 +112,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:onClick="createRegisterDialog"
             android:text="@string/Register"
             android:textSize="17dp"
             android:textStyle="bold" />
