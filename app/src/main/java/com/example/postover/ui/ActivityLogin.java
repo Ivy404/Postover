@@ -124,24 +124,31 @@ public class ActivityLogin extends AppCompatActivity {
                                 Client cliente = new Client(user.getDisplayName(), user.getEmail());
 
                                 String id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                                mDatabase.child("users").child(id).setValue(cliente).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task2) {
-                                        if (task2.isSuccessful()) {
-                                            Toast.makeText(ActivityLogin.this, "Success! User added", Toast.LENGTH_LONG).show();
-                                            Intent mainIntent = new Intent(ActivityLogin.this, MainActivity.class);
-                                            mainIntent.putExtra("KeepLoged","KeepLoged");
-                                            ActivityLogin.this.startActivity(mainIntent);
-                                            ActivityLogin.this.finish();
-                                        } else {
-                                            Toast.makeText(ActivityLogin.this, "Error! User could not be created", Toast.LENGTH_SHORT).show();
-                                            mDatabase.child("users").child(id).removeValue();
-                                            Intent mainIntent = new Intent(ActivityLogin.this, ActivityLogin.class);
-                                            ActivityLogin.this.startActivity(mainIntent);
-                                            ActivityLogin.this.finish();
+                                if(mDatabase.child("users").child(id).getKey() == null){
+                                    mDatabase.child("users").child(id).setValue(cliente).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task2) {
+                                            if (task2.isSuccessful()) {
+                                                Toast.makeText(ActivityLogin.this, "Success! User added", Toast.LENGTH_LONG).show();
+                                                Intent mainIntent = new Intent(ActivityLogin.this, MainActivity.class);
+                                                mainIntent.putExtra("KeepLoged","KeepLoged");
+                                                ActivityLogin.this.startActivity(mainIntent);
+                                                ActivityLogin.this.finish();
+                                            } else {
+                                                Toast.makeText(ActivityLogin.this, "Error! User could not be created", Toast.LENGTH_SHORT).show();
+                                                mDatabase.child("users").child(id).removeValue();
+                                                Intent mainIntent = new Intent(ActivityLogin.this, ActivityLogin.class);
+                                                ActivityLogin.this.startActivity(mainIntent);
+                                                ActivityLogin.this.finish();
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }else{
+                                    Intent mainIntent = new Intent(ActivityLogin.this, MainActivity.class);
+                                    mainIntent.putExtra("KeepLoged","KeepLoged");
+                                    ActivityLogin.this.startActivity(mainIntent);
+                                    ActivityLogin.this.finish();
+                                }
                             }else{
                                 Toast.makeText(ActivityLogin.this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
                             }
