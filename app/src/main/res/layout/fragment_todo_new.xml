@@ -4,28 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
+
     <EditText
         android:id="@+id/new_todo_text"
-        android:layout_width="match_parent"
+        android:layout_width="277dp"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:hint="New Todo"/>
+        android:hint="New Todo"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <Button
+        android:id="@+id/new_todo_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/new_todo_button"
         android:layout_below="@+id/new_todo_text"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:textSize="16dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        android:background="@android:color/transparent"
         android:text="Save"
         android:textAllCaps="false"
-        android:background="@android:color/transparent"
         android:textColor="@color/black"
-        />
-
+        android:textSize="16dp" />
 
 
 </RelativeLayout>

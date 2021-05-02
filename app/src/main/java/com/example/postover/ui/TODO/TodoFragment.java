@@ -57,7 +57,8 @@ public class TodoFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddTodo.newInstance().show(getActivity().getSupportFragmentManager(),AddTodo.TAG);
+                AddTodo addTodo = new AddTodo();
+                addTodo.show(getActivity().getSupportFragmentManager(),AddTodo.TAG);
             }
         });
 

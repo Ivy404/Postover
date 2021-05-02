@@ -46,11 +46,6 @@ public class AddTodo extends BottomSheetDialogFragment {
         return new AddTodo();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(STYLE_NORMAL, R.style.DialogStyle);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
