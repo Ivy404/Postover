@@ -17,6 +17,7 @@ public class Client {
     private String password;
     //private Image icon;
     private List<ToDoNote> todoList;
+    private List<HomeNote> homeNoteList;
 
     public Client(String name, String password, String mail, String username) {
         this.name = name;
@@ -24,8 +25,11 @@ public class Client {
         this.password = password;
         this.mail = mail;
         todoList = new ArrayList<>();
+        homeNoteList = new ArrayList<>();
         ToDoNote note = new ToDoNote("Your First Todo!");
+        HomeNote homeNote = new HomeNote("Your first HomeNote!");
         todoList.add(note);
+        homeNoteList.add(homeNote);
 
     }
     public Client(){}
@@ -33,7 +37,13 @@ public class Client {
         return name;
     }
 
+    public List<HomeNote> getHomeNoteList() {
+        return homeNoteList;
+    }
 
+    public void setHomeNoteList(List<HomeNote> homeNoteList) {
+        this.homeNoteList = homeNoteList;
+    }
 
     public List<ToDoNote> getTodoList() {
         return todoList;
