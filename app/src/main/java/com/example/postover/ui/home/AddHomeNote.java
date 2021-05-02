@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -105,6 +106,7 @@ public class AddHomeNote extends BottomSheetDialogFragment {
                                 homeNoteList = client.getHomeNoteList();
                             }
                             homeNoteList.add(new HomeNote(newHomeNoteText.getText().toString()));
+                            Toast.makeText(getActivity(), String.valueOf(homeNoteList.size()), Toast.LENGTH_SHORT).show();
                             mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(client);
 
                         }
