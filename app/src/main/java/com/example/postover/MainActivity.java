@@ -3,6 +3,7 @@ package com.example.postover;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -19,11 +20,18 @@ import com.example.postover.ui.TODO.DialogCloseListener;
 import com.example.postover.ui.TODO.TodoFragment;
 import com.example.postover.ui.home.HomeFragment;
 import com.example.postover.ui.slideshow.CalendarFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -64,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private FirebaseAuth mAuth;
     public FirebaseUser user;
 
+    private int GOOGLE_SIGN_IN = 100;
 
 
     @Override
@@ -82,29 +91,29 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             if (getIntent().getExtras().getString("Login") != null) {
                 View v = new View(getApplicationContext());
                 createLoginDialog(v);
-            }
-            else if (getIntent().getExtras().getString("Guest") != null){
+            } else if (getIntent().getExtras().getString("Guest") != null) {
                 System.out.println("he entrado");
 
-            }else if (getIntent().getExtras().getString("KeepLoged") != null){
+            } else if (getIntent().getExtras().getString("KeepLoged") != null) {
+                createFragments();
+            } else {
                 createFragments();
             }
-            else{
-                createFragments();
-            }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             //createFragments();
         }
 
 
     }
-    public void signOut(View v){
+
+    public void signOut(View v) {
         mAuth.signOut();
         Intent mainIntent = new Intent(MainActivity.this, ActivityRegister.class);
         MainActivity.this.startActivity(mainIntent);
         MainActivity.this.finish();
     }
-    public void createFragments(){
+
+    public void createFragments() {
         List<Fragment> fragmentList = new ArrayList<>();
         todoFragment = new TodoFragment();
         fragmentList.add(todoFragment);
@@ -124,7 +133,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             public void onClick(View v) {
                 viewPager2.setCurrentItem(0);
             }
-        });;
+        });
+        ;
         notes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,7 +149,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         });
         updateNav();
     }
-    public void updateNav(){
+
+    public void updateNav() {
         mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -179,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         final View loginPopupView = getLayoutInflater().inflate(R.layout.popup_login, null);
         Button login = (Button) loginPopupView.findViewById(R.id.btn_login);
         TextView register = loginPopupView.findViewById(R.id.tv_register);
+        Button googleLogin = loginPopupView.findViewById(R.id.google_login);
         loginMail = (EditText) loginPopupView.findViewById(R.id.pt_username);
         loginPassword = (EditText) loginPopupView.findViewById(R.id.pt_password);
 
@@ -191,9 +203,9 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             public void onClick(View v) {
                 mailLogin = loginMail.getText().toString();
                 passwordLogin = loginPassword.getText().toString();
-                if(mailLogin.length()>0 && passwordLogin.length()>0){
+                if (mailLogin.length() > 0 && passwordLogin.length() > 0) {
                     loginUser();
-                }else{
+                } else {
                     Toast.makeText(MainActivity.this, "Cannot be empty!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -208,10 +220,53 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             }
         });
 
+        googleLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build();
+                GoogleSignInClient googleClient = GoogleSignIn.getClient(MainActivity.this, gso);
+                googleClient.signOut();
+
+                startActivityForResult(googleClient.getSignInIntent(), GOOGLE_SIGN_IN);
+            }
+        });
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GOOGLE_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+
+                if(account != null){
+                    AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
+                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                //Datos realetime database
+                            }else{
+                                Toast.makeText(MainActivity.this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            } catch (ApiException e) {
+                Toast.makeText(this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 
-    public void openDrawer(View v){
+    public void openDrawer(View v) {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.openDrawer(GravityCompat.START);
     }
@@ -232,6 +287,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             }
         });
     }
+
     @Override
     public void handleDialogClose(DialogInterface dialog) {
         todoFragment.getList();
