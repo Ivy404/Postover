@@ -62,7 +62,7 @@ public class ActivityRegister extends AppCompatActivity {
                 password = editTextPassword.getText().toString();
                 email = editTextEmail.getText().toString();
 
-                if (!name.isEmpty() && !email.isEmpty() && !username.isEmpty() && !password.isEmpty()) {
+                if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
                     if (password.length() >= 6) {
                         registerNewUser();
                     } else {

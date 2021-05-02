@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#B3000000"
+        android:background="#CC000000"
         android:clickable="true">
 
         <ImageView
