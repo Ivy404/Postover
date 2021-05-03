@@ -18,6 +18,10 @@ import com.example.postover.Model.ToDoNote;
 import com.example.postover.R;
 import com.example.postover.ui.TODO.TodoAdapter;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +29,13 @@ import java.util.Map;
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHolder> {
     private HashMap<String,List<CalendarNote>> calendarNotes;
     FragmentActivity mainActivity;
+    ArrayList<Long> time;
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView day;
         private TextView numDay;
+        private TextView month;
         private RecyclerView rvSubItem;
 
         public ViewHolder(View view) {
@@ -37,6 +43,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             // Define click listener for the ViewHolder's View
             day = view.findViewById(R.id.day_calendar_text);
             numDay = view.findViewById(R.id.num_calendar_text);
+            month = view.findViewById(R.id.month_calendar_text);
             rvSubItem = view.findViewById(R.id.recyclerviewinfo);
         }
 
@@ -50,8 +57,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     }
 
 
-    public void setTodoList(HashMap<String,List<CalendarNote>> dataSet) {
+    public void setTodoList(HashMap<String,List<CalendarNote>> dataSet,ArrayList<Long> time_) {
         calendarNotes = dataSet;
+        time= time_;
         notifyDataSetChanged();
     }
 
@@ -64,28 +72,25 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull CalendarAdapter.ViewHolder holder, int position) {
-        int i = 0;
-        String key = "";
-        List<CalendarNote> value = null;
-        for(Map.Entry<String, List<CalendarNote>> entry : calendarNotes.entrySet()) {
-             key = entry.getKey();
-             value = entry.getValue();
-            if (i == position){break;}
-            i++;
-        }
-        holder.day.setText(calendarNotes.get(key).get(0).getDate().toString().substring(0,3));
-        holder.numDay.setText(calendarNotes.get(key).get(0).getDate().toString().substring(8,10));
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(holder.rvSubItem.getContext(),
-                LinearLayoutManager.VERTICAL,false);
-        layoutManager.setInitialPrefetchItemCount(calendarNotes.size());
+            if(position<time.size()) {
+                List<CalendarNote> calendarNote = calendarNotes.get(Long.toString(time.get(position)));
 
-        InformationCalendarViewAdapter informationCalendarViewAdapter = new InformationCalendarViewAdapter();
-        informationCalendarViewAdapter.setinformationlist(value);
+                holder.day.setText(calendarNote.get(0).getDate().toString().substring(0, 3));
+                holder.numDay.setText(calendarNote.get(0).getDate().toString().substring(8, 10));
+                holder.month.setText(calendarNote.get(0).getDate().toString().substring(4, 7));
 
-        holder.rvSubItem.setLayoutManager(layoutManager);
-        holder.rvSubItem.setAdapter(informationCalendarViewAdapter);
-        holder.rvSubItem.setRecycledViewPool(viewPool);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(holder.rvSubItem.getContext(),
+                        LinearLayoutManager.VERTICAL, false);
+                layoutManager.setInitialPrefetchItemCount(calendarNotes.size());
+
+                InformationCalendarViewAdapter informationCalendarViewAdapter = new InformationCalendarViewAdapter();
+                informationCalendarViewAdapter.setinformationlist(calendarNote);
+
+                holder.rvSubItem.setLayoutManager(layoutManager);
+                holder.rvSubItem.setAdapter(informationCalendarViewAdapter);
+                holder.rvSubItem.setRecycledViewPool(viewPool);
+            }
 
 
 

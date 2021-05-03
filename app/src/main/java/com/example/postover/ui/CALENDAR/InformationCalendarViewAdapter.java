@@ -50,6 +50,7 @@ public class InformationCalendarViewAdapter extends RecyclerView.Adapter<Informa
 
     @Override
     public void onBindViewHolder(@NonNull InformationCalendarViewAdapter.ViewHolder holder, int position) {
+
         holder.calendarInfo.setText(calendarlistinfo.get(position).getTitle());
         holder.calendarSubInfo.setText(calendarlistinfo.get(position).getSubtitle());
     }

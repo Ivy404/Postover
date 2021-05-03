@@ -220,14 +220,14 @@ public class AddCalendar extends BottomSheetDialogFragment {
                         calendarNoteList = client.getHashCalendar();
                     }
                     if(calendarNoteList.containsKey(note.getDate().toString().substring(8,10))){
-                        List<CalendarNote> calendarNotes = calendarNoteList.get(note.getDate().toString().substring(8,10));
+                        List<CalendarNote> calendarNotes = calendarNoteList.get(Long.toString(note.getDate().getTime()));
                         calendarNotes.add(note); // añadido a la lista
 
                     }
                     else{
                         List<CalendarNote> calendarNotes = new ArrayList<>();
                         calendarNotes.add(note); // añadido a la lista
-                        calendarNoteList.put(note.getDate().toString().substring(8,10),calendarNotes);
+                        calendarNoteList.put(Long.toString(note.getDate().getTime()),calendarNotes);
 
                     }
                     mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(client);

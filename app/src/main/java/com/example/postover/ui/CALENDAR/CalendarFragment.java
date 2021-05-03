@@ -32,8 +32,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class CalendarFragment extends Fragment {
 
@@ -50,10 +54,12 @@ public class CalendarFragment extends Fragment {
 
         CalendarView calendarView = root.findViewById(R.id.calendarView);
 
+
         recyclerView = root.findViewById(R.id.calendarRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         calendarAdapter = new CalendarAdapter(getActivity());
         recyclerView.setAdapter(calendarAdapter);
+
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -94,7 +100,24 @@ public class CalendarFragment extends Fragment {
                         calendarNotes = client.getHashCalendar();
                     }
                     //informationCalendarViewAdapter.setTodoList(calendarNotes);
-                    calendarAdapter.setTodoList(calendarNotes);
+
+                    String month_ = Calendar.getInstance().getTime().toString().substring(4,7);
+                    ArrayList<Long >time = new ArrayList<>();
+
+                    Set<Map.Entry<String,List<CalendarNote>>> setOfEntries  =  calendarNotes.entrySet();
+                    Iterator<Map.Entry<String,List<CalendarNote>>> iterator = setOfEntries .iterator();
+
+                    while(iterator.hasNext()){
+                        Map.Entry<String,List<CalendarNote>> entry = iterator.next();
+                        String s =calendarNotes.get(entry.getKey()).get(0).getDate().toString().substring(4,7);
+                        if (month_.equals(s) ){
+                            time.add(Long.parseLong(entry.getKey()));
+                        }else{
+                            iterator.remove();
+                        }
+                    }
+                    Collections.sort(time);
+                    calendarAdapter.setTodoList(calendarNotes,time);
                 }
             }
         });

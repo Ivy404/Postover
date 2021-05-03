@@ -57,6 +57,12 @@ public class CalendarNote extends Note {
         return this.date;
     }
 
+    public String convertDate(){
+        Date date =  getDate();
+
+        return "";
+    }
+
     public void setDate(Date date) {
         this.date = date;
     }

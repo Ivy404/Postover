@@ -40,7 +40,7 @@ public class Client {
         CalendarNote calendarNote = new CalendarNote("First Calendar","Information", Calendar.getInstance().getTime());
         calendarNotes.add(calendarNote);
 
-        hashCalendar.put(calendarNote.getDate().toString().substring(8,10),calendarNotes);
+        hashCalendar.put(Long.toString(calendarNote.getDate().getTime()),calendarNotes);
 
     }
     public Client(){}

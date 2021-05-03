@@ -14,21 +14,26 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp">
 
+        <TextView
+            android:id="@+id/month_calendar_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/day_calendar_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="MON" />
+            android:layout_below="@id/month_calendar_text"
+            android:textSize="15dp" />
+
         <TextView
             android:id="@+id/num_calendar_text"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/day_calendar_text"
             android:layout_marginLeft="5dp"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="08" />
+            android:textSize="15dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewinfo"
