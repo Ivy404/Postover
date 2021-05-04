@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1031976145011",
+    "firebase_url": "https://postover-a7127-default-rtdb.firebaseio.com",
     "project_id": "postover-a7127",
     "storage_bucket": "postover-a7127.appspot.com"
   },
@@ -13,14 +14,6 @@
         }
       },
       "oauth_client": [
-        {
-          "client_id": "1031976145011-67nop1pi7bf7acch1fmm7cjkpj1jpm6i.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.postover",
-            "certificate_hash": "2cde42c41dc19e0def5c32f7c38766fca25ca9c2"
-          }
-        },
         {
           "client_id": "1031976145011-f922paqe06o95756njnsv9mkvtc50n5v.apps.googleusercontent.com",
           "client_type": 3

@@ -18,14 +18,16 @@
             android:id="@+id/month_calendar_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:text="May"/>
 
         <TextView
             android:id="@+id/day_calendar_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/month_calendar_text"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:text="Fri"/>
 
         <TextView
             android:id="@+id/num_calendar_text"
@@ -33,7 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/day_calendar_text"
             android:layout_marginLeft="5dp"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:text="07"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewinfo"

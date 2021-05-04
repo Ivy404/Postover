@@ -55,6 +55,13 @@ public class ActivityRegister extends AppCompatActivity {
         intent = new Intent(ActivityRegister.this, MainActivity.class);
         loginIntent = new Intent(ActivityRegister.this, ActivityLogin.class);
 
+        try{
+            if(getIntent().getExtras().getString("Register") != null){
+
+            }
+        }catch (NullPointerException e){}
+
+
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

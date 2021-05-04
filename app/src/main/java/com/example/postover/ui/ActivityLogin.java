@@ -29,8 +29,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
@@ -88,19 +92,15 @@ public class ActivityLogin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken("1031976145011-f922paqe06o95756njnsv9mkvtc50n5v.apps.googleusercontent.com")
+                        .requestIdToken(getString(R.string.default_web_client_id))
                         .requestEmail()
                         .build();
 
                 GoogleSignInClient googleClient = GoogleSignIn.getClient(ActivityLogin.this, gso);
-
-
-                //googleClient.signOut();
-
+                googleClient.signOut();
                 startActivityForResult(googleClient.getSignInIntent(), GOOGLE_SIGN_IN);
             }
         });
-
     }
 
     @Override
@@ -109,58 +109,69 @@ public class ActivityLogin extends AppCompatActivity {
 
         if (requestCode == GOOGLE_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 
-                if(account != null){
-                    AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
-
-                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                if(account != null) {
+                    AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                    mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                Client cliente = new Client(user.getDisplayName(), user.getEmail());
 
-                                String id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                                //if(mDatabase.child("users").child(id).getKey() == null){ // si se vuelve a logear con google se reinicia el usuario
-                                    mDatabase.child("users").child(id).setValue(cliente).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task2) {
-                                            if (task2.isSuccessful()) {
-                                                Toast.makeText(ActivityLogin.this, "Success! User added", Toast.LENGTH_LONG).show();
-                                                Intent mainIntent = new Intent(ActivityLogin.this, MainActivity.class);
-                                                mainIntent.putExtra("KeepLoged","KeepLoged");
-                                                ActivityLogin.this.startActivity(mainIntent);
-                                                ActivityLogin.this.finish();
-                                            } else {
-                                                Toast.makeText(ActivityLogin.this, "Error! User could not be created", Toast.LENGTH_SHORT).show();
-                                                mDatabase.child("users").child(id).removeValue();
-                                                Intent mainIntent = new Intent(ActivityLogin.this, ActivityLogin.class);
-                                                ActivityLogin.this.startActivity(mainIntent);
-                                                ActivityLogin.this.finish();
-                                            }
-                                        }
-                                    });
-                                /*}else{
-                                    Intent mainIntent = new Intent(ActivityLogin.this, MainActivity.class);
-                                    mainIntent.putExtra("KeepLoged","KeepLoged");
-                                    ActivityLogin.this.startActivity(mainIntent);
-                                    ActivityLogin.this.finish();
-                                }*/
+                                String id = mAuth.getUid();
 
-                            }else{
-                                Toast.makeText(ActivityLogin.this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
+                                checkUser(id);
+                                }else{
+                                    Toast.makeText(ActivityLogin.this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
+                                }
+                        }
+                    });
+                   }
+
+            } catch (ApiException e) {
+                Toast.makeText(ActivityLogin.this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    }
+
+    public void checkUser(String id){
+        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(!task.isSuccessful()){
+                    Client client = new Client(mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getEmail());
+                    mDatabase.child("users").child(id).setValue(client).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task2) {
+                            if (task2.isSuccessful()) {
+                                Toast.makeText(ActivityLogin.this, "Success! Created user with Google completed", Toast.LENGTH_SHORT).show();
+                                Intent activityIntent = new Intent(ActivityLogin.this, MainActivity.class);
+                                activityIntent.putExtra("KeepLoged", "KeepLoged");
+                                ActivityLogin.this.finish();
+                                ActivityLogin.this.startActivity(activityIntent);
+                            } else {
+                                Toast.makeText(ActivityLogin.this, "Error! login with Google inCompleted", Toast.LENGTH_SHORT).show();
+                                Intent activityIntent = new Intent(ActivityLogin.this, ActivityLogin.class);
+                                ActivityLogin.this.finish();
+                                ActivityLogin.this.startActivity(activityIntent);
+
                             }
                         }
                     });
                 }
-            } catch (ApiException e) {
-                System.out.println(e.getMessage());
-                Toast.makeText(this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
+                else{
+                    Toast.makeText(ActivityLogin.this, "Success! login with Google completed", Toast.LENGTH_SHORT).show();
+                    Intent activityIntent = new Intent(ActivityLogin.this, MainActivity.class);
+                    activityIntent.putExtra("KeepLoged", "KeepLoged");
+                    ActivityLogin.this.finish();
+                    ActivityLogin.this.startActivity(activityIntent);
+                }
             }
-        }
+        });
     }
 
     public void loginUser() {
