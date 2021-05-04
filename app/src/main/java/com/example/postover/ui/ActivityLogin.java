@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -137,38 +138,43 @@ public class ActivityLogin extends AppCompatActivity {
             }
         }
     }
-
     public void checkUser(String id){
         mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(!task.isSuccessful()){
-                    Client client = new Client(mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getEmail());
-                    mDatabase.child("users").child(id).setValue(client).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task2) {
-                            if (task2.isSuccessful()) {
-                                Toast.makeText(ActivityLogin.this, "Success! Created user with Google completed", Toast.LENGTH_SHORT).show();
-                                Intent activityIntent = new Intent(ActivityLogin.this, MainActivity.class);
-                                activityIntent.putExtra("KeepLoged", "KeepLoged");
-                                ActivityLogin.this.finish();
-                                ActivityLogin.this.startActivity(activityIntent);
-                            } else {
-                                Toast.makeText(ActivityLogin.this, "Error! login with Google inCompleted", Toast.LENGTH_SHORT).show();
-                                Intent activityIntent = new Intent(ActivityLogin.this, ActivityLogin.class);
-                                ActivityLogin.this.finish();
-                                ActivityLogin.this.startActivity(activityIntent);
-
-                            }
-                        }
-                    });
+                    Log.e("firebase", "Error getting data", task.getException());
                 }
                 else{
-                    Toast.makeText(ActivityLogin.this, "Success! login with Google completed", Toast.LENGTH_SHORT).show();
-                    Intent activityIntent = new Intent(ActivityLogin.this, MainActivity.class);
-                    activityIntent.putExtra("KeepLoged", "KeepLoged");
-                    ActivityLogin.this.finish();
-                    ActivityLogin.this.startActivity(activityIntent);
+                    Client client = task.getResult().getValue(Client.class);
+                    if(client != null){
+                        Toast.makeText(ActivityLogin.this, "Success! login with Google completed", Toast.LENGTH_SHORT).show();
+                        Intent activityIntent = new Intent(ActivityLogin.this, MainActivity.class);
+                        activityIntent.putExtra("KeepLoged", "KeepLoged");
+                        ActivityLogin.this.finish();
+                        ActivityLogin.this.startActivity(activityIntent);
+
+                    }else{
+                        Client client_ = new Client(mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getEmail());
+                        mDatabase.child("users").child(id).setValue(client_).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task2) {
+                                if (task2.isSuccessful()) {
+                                    Toast.makeText(ActivityLogin.this, "Success! Created user with Google completed", Toast.LENGTH_SHORT).show();
+                                    Intent activityIntent = new Intent(ActivityLogin.this, MainActivity.class);
+                                    activityIntent.putExtra("KeepLoged", "KeepLoged");
+                                    ActivityLogin.this.finish();
+                                    ActivityLogin.this.startActivity(activityIntent);
+                                } else {
+                                    Toast.makeText(ActivityLogin.this, "Error! login with Google inCompleted", Toast.LENGTH_SHORT).show();
+                                    Intent activityIntent = new Intent(ActivityLogin.this, ActivityLogin.class);
+                                    ActivityLogin.this.finish();
+                                    ActivityLogin.this.startActivity(activityIntent);
+
+                                }
+                            }
+                        });
+                    }
                 }
             }
         });
