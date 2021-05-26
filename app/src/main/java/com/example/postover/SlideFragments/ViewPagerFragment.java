@@ -13,9 +13,6 @@ import com.example.postover.R;
 
 public class ViewPagerFragment extends Fragment {
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

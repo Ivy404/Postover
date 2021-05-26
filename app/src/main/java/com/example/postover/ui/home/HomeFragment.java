@@ -1,43 +1,28 @@
 package com.example.postover.ui.home;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.postover.CreateNoteActivity;
 import com.example.postover.MainActivity;
 import com.example.postover.Model.Client;
 import com.example.postover.Model.HomeNote;
-import com.example.postover.Model.Note;
-import com.example.postover.Model.ToDoNote;
 import com.example.postover.R;
 import com.example.postover.ui.ActivityRegister;
-import com.example.postover.ui.TODO.AddTodo;
-import com.example.postover.ui.TODO.TodoAdapter;
-import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,7 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class HomeFragment extends Fragment {
-    private RecyclerView reciclerView;
+    private RecyclerView recyclerView;
     private MainAdapter mainAdapter;
     private List<HomeNote> homeNotes;
     private DatabaseReference mDatabase;
@@ -59,29 +44,45 @@ public class HomeFragment extends Fragment {
         mainAdapter = new MainAdapter(homeNotes, getActivity());
 
 
-        reciclerView = root.findViewById(R.id.homeRecyclerView);
+        recyclerView = root.findViewById(R.id.homeRecyclerView);
         int spacingInPixels = 16;
-        reciclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
+        recyclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
-        reciclerView.setLayoutManager(manager);
-        reciclerView.setAdapter(mainAdapter);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(mainAdapter);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(getActivity(),CreateNoteActivity.class);
+                        intent.putExtra("note",homeNotes.get(position));
+                        intent.putExtra("position",position);
+                        startActivityForResult(intent,1);
+
+
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        Toast.makeText(getContext(), "long", Toast.LENGTH_LONG).show();
+                    }
+                })
+        );
         getList();
 
-        /*gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "You clicked " + number[+position], Toast.LENGTH_SHORT).show();
-            }
-        });*/
+
+
+
 
         return root;
     }
 
     public void AddNote(View view){
-        AddHomeNote.newInstance().show(getActivity().getSupportFragmentManager(),AddHomeNote.TAG);
+        //AddHomeNote.newInstance().show(getActivity().getSupportFragmentManager(),AddHomeNote.TAG);
+        Intent intent = new Intent(getActivity(), CreateNoteActivity.class);
+        startActivityForResult(intent,1);
     }
 
     public void getList() {
@@ -93,7 +94,6 @@ public class HomeFragment extends Fragment {
                 } else {
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                     Client client = task.getResult().getValue(Client.class);
-                    List<HomeNote> homeNotes;
                     if(client.getHomeNoteList() == null){
                         homeNotes = new ArrayList<>();
                     }
