@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.ActivityLogin"></activity>
         <activity android:name=".ui.ActivityRegister"></activity>
+        <activity android:name=".CreateNoteActivity"></activity>
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
