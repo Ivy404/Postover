@@ -49,4 +49,6 @@
     <string name="BorrarHomeNote">Borrar</string>
     <string name="floatingbutton" />
     <string name="signout_button">Sign out</string>
+    <string name="facebook_app_id">758943588156580</string> <string name="fb_login_protocol_scheme">fb758943588156580</string>
+
 </resources>

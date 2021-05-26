@@ -18,6 +18,12 @@ import android.widget.Toast;
 import com.example.postover.MainActivity;
 import com.example.postover.Model.Client;
 import com.example.postover.R;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -27,6 +33,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -37,12 +44,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public class ActivityLogin extends AppCompatActivity {
     private EditText loginMail, loginPassword;
     private String mailLogin, passwordLogin;
     private final int GOOGLE_SIGN_IN = 100;
+    private final CallbackManager callbackManager = CallbackManager.Factory.create();
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -62,6 +74,8 @@ public class ActivityLogin extends AppCompatActivity {
         Button login = (Button) findViewById(R.id.btn_login);
         TextView register = findViewById(R.id.tv_register);
         ImageView googleLogin = findViewById(R.id.google_login);
+        ImageView twiterLogin = findViewById(R.id.twitteR_login);
+        ImageView facebookLogin = findViewById(R.id.facebook_login);
         loginMail = (EditText) findViewById(R.id.pt_username);
         loginPassword = (EditText) findViewById(R.id.pt_password);
 
@@ -102,10 +116,53 @@ public class ActivityLogin extends AppCompatActivity {
                 startActivityForResult(googleClient.getSignInIntent(), GOOGLE_SIGN_IN);
             }
         });
+
+        twiterLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Falta que me metan en twitter developers para hacerlo
+            }
+        });
+
+        facebookLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager.getInstance().logInWithReadPermissions(ActivityLogin.this, Collections.singletonList("email"));
+                LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        AccessToken token = loginResult.getAccessToken();
+                        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+                        mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    String id = mAuth.getUid();
+                                    checkUser(id);
+                                }else{
+                                    Toast.makeText(ActivityLogin.this, "Error! Facebook authentification exploted", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        Toast.makeText(ActivityLogin.this, "Error!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == GOOGLE_SIGN_IN) {
@@ -121,9 +178,7 @@ public class ActivityLogin extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-
                                 String id = mAuth.getUid();
-
                                 checkUser(id);
                                 }else{
                                     Toast.makeText(ActivityLogin.this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
@@ -148,7 +203,7 @@ public class ActivityLogin extends AppCompatActivity {
                 else{
                     Client client = task.getResult().getValue(Client.class);
                     if(client != null){
-                        Toast.makeText(ActivityLogin.this, "Success! login with Google completed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityLogin.this, "Success! login completed", Toast.LENGTH_SHORT).show();
                         Intent activityIntent = new Intent(ActivityLogin.this, MainActivity.class);
                         activityIntent.putExtra("KeepLoged", "KeepLoged");
                         ActivityLogin.this.finish();

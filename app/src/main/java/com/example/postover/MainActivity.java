@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
         MainActivity.this.startActivity(mainIntent);
         MainActivity.this.finish();
     }
+
     public void createFragments(){
         List<Fragment> fragmentList = new ArrayList<>();
         todoFragment = new TodoFragment();
