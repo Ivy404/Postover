@@ -61,7 +61,7 @@ public class TodoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AddTodo addTodo = new AddTodo(getContext());
-                addTodo.show(getParentFragmentManager(),"Add Todo");
+                addTodo.show(getActivity().getSupportFragmentManager(),"Add Todo");
             }
         });
         return root;

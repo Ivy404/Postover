@@ -2,6 +2,7 @@ package com.example.postover.ui.CALENDAR;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -21,7 +22,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 
 
 import com.example.postover.Model.CalendarNote;
@@ -44,7 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class AddCalendar extends BottomSheetDialogFragment {
+public class AddCalendar extends DialogFragment {
     public static final String TAG = "ActionBottomDialog";
     private EditText newCalendarNote;
     private EditText newCalendarNotesub;
@@ -57,28 +61,35 @@ public class AddCalendar extends BottomSheetDialogFragment {
     public static AddCalendar newInstance(){
         return new AddCalendar();
     }
+
     public  AddCalendar(CalendarView view, int year, int month, int dayOfMonth){
         this.viewCalendar=view;
         this.year=year;
         this.month=month;
         this.dayOfMonth=dayOfMonth;
+
     }
-    public AddCalendar(){}
+    public AddCalendar(){
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_calendar_new,container,false);
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        return view;
     }
 
+    @NonNull
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
-        super.onViewCreated(view,savedInstanceState);
-        newCalendarNote = getView().findViewById(R.id.new_calendar_text);
-        newCalendarButton = getView().findViewById(R.id.new_calendar_button);
-        newCalendarNotesub = getView().findViewById(R.id.new_calendar_text_sub);
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        return createDialog();
+    }
+
+    private Dialog createDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View v = inflater.inflate(R.layout.fragment_calendar_new,null);
+        builder.setView(v);
+
+        newCalendarNote = v.findViewById(R.id.new_calendar_text);
+        newCalendarButton = v.findViewById(R.id.new_calendar_button);
+        newCalendarNotesub = v.findViewById(R.id.new_calendar_text_sub);
 
         newCalendarButton.setEnabled(false);
 
@@ -87,6 +98,7 @@ public class AddCalendar extends BottomSheetDialogFragment {
 
         final boolean[] first = {false};
         final boolean[] second = {false};
+
         newCalendarNote.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -146,7 +158,10 @@ public class AddCalendar extends BottomSheetDialogFragment {
             }
         });
 
+        return builder.create();
     }
+
+
 
     @Override
     public void onDismiss(DialogInterface dialog) {
@@ -240,6 +255,94 @@ public class AddCalendar extends BottomSheetDialogFragment {
 
 
     }
+    /*
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        View view = inflater.inflate(R.layout.fragment_calendar_new,container,false);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        return view;
+    }
+    */
+    /*
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+
+        super.onViewCreated(view,savedInstanceState);
+
+
+        newCalendarNote = getView().findViewById(R.id.new_calendar_text);
+        newCalendarButton = getView().findViewById(R.id.new_calendar_button);
+        newCalendarNotesub = getView().findViewById(R.id.new_calendar_text_sub);
+
+        newCalendarButton.setEnabled(false);
+
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        final boolean[] first = {false};
+        final boolean[] second = {false};
+
+        newCalendarNote.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().equals("")){
+                    newCalendarButton.setEnabled(false);
+                    newCalendarButton.setTextColor(Color.GRAY);
+                    first[0] = false;
+                }
+                else{
+                    first[0] = true;
+                    if(first[0] && second[0]){
+                        newCalendarButton.setTextColor(ContextCompat.getColor(getContext(),R.color.lightred));
+                        newCalendarButton.setEnabled(true);
+                    }
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        newCalendarNotesub.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().equals("")){
+                    newCalendarButton.setEnabled(false);
+                    newCalendarButton.setTextColor(Color.GRAY);
+                    second[0] = false;
+                }
+                else{
+                    second[0] = true;
+                    if(first[0] && second[0]){
+                        newCalendarButton.setTextColor(ContextCompat.getColor(getContext(),R.color.lightred));
+                        newCalendarButton.setEnabled(true);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        newCalendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(year != -1) createCalendarNote(viewCalendar,year,month,dayOfMonth);
+                else{createCalendarNote(v);}
+            }
+        });
+
+    }*/
+
 
 }
 

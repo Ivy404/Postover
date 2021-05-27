@@ -90,6 +90,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         backimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setResult(1);
                 finish();
             }
         });
