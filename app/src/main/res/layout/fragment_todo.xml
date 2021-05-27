@@ -27,6 +27,7 @@
         android:layout_alignParentRight="true"
         android:layout_margin="32dp"
         android:backgroundTint="#B3000000"
+        app:tint = "@color/white"
         android:src="@drawable/ic_baseline_add_24"
         />
     </RelativeLayout>
