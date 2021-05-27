@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/addTodoFragment"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="100dp">
 
     <EditText
         android:id="@+id/new_todo_text"
         android:layout_width="277dp"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
         android:background="@null"
         android:hint="New Todo"
+        android:gravity="top|left"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <Button
@@ -20,10 +21,12 @@
         android:layout_below="@+id/new_todo_text"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_marginTop="19dp"
         android:layout_marginEnd="3dp"
-        android:layout_marginRight="3dp"
+        android:layout_marginRight="1dp"
         android:background="@android:color/transparent"
         android:text="Save"
+
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="16dp" />

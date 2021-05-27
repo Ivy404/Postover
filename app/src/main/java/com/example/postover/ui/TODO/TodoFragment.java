@@ -1,6 +1,7 @@
 package com.example.postover.ui.TODO;
 
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,8 +60,8 @@ public class TodoFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddTodo addTodo = new AddTodo();
-                addTodo.show(getActivity().getSupportFragmentManager(),AddTodo.TAG);
+                AddTodo addTodo = new AddTodo(getContext());
+                addTodo.show(getParentFragmentManager(),"Add Todo");
             }
         });
         return root;
