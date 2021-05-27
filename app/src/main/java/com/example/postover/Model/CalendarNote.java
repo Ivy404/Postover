@@ -1,5 +1,7 @@
 package com.example.postover.Model;
 
+import android.os.Parcel;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -75,4 +77,6 @@ public class CalendarNote extends Note {
     public void switchNotifications() {
         this.notifications = !this.notifications;
     }
+
+
 }

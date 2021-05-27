@@ -1,8 +1,11 @@
 package com.example.postover.Model;
 
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public abstract class Note {
+public abstract class Note implements Serializable {
     //Attributes
     String title;
     Date lastModification;

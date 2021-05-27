@@ -1,5 +1,7 @@
 package com.example.postover.Model;
 
+import android.os.Parcel;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -51,4 +53,6 @@ public class ToDoNote extends Note{
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+
 }

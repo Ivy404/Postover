@@ -1,5 +1,6 @@
 package com.example.postover;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -70,7 +71,6 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
     private HomeFragment homeFragment;
     private CalendarFragment calendarFragment;
 
-
     //cositas del firebase
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -101,12 +101,14 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
 
             } else if (getIntent().getExtras().getString("KeepLoged") != null) {
                 createFragments();
-            } else {
+            }
+            else {
                 createFragments();
             }
         } catch (NullPointerException e) {
             //createFragments();
         }
+
 
 
     }
@@ -216,6 +218,10 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
                 Toast.makeText(this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
             }
         }
+        if(resultCode == 1){
+            handleDialogClose(dialog,"HomeNote");
+
+        }
     }
 
     public void openDrawer(View v){
@@ -241,21 +247,22 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
     }
 
 
-    @Override
-    public void handleDialogClose(DialogInterface dialog,String note) {
-       switch (note){
-           case "Todo":
-               todoFragment.getList();
-               break;
-           case "HomeNote":
-                homeFragment.getList();
-               break;
-           case "CalendarNote":
-               calendarFragment.getList();
-               break;
 
-       }
+        @Override
+        public void handleDialogClose (DialogInterface dialog, String note){
+            switch (note) {
+                case "Todo":
+                    todoFragment.getList();
+                    break;
+                case "HomeNote":
+                    homeFragment.getList();
+                    break;
+                case "CalendarNote":
+                    calendarFragment.getList();
+                    break;
+
+            }
+        }
+
+
     }
-
-
-}
