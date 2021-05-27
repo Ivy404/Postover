@@ -30,6 +30,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -37,6 +39,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -66,7 +69,7 @@ public class ActivityLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-
+        OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
@@ -120,7 +123,32 @@ public class ActivityLogin extends AppCompatActivity {
         twiterLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Falta que me metan en twitter developers para hacerlo
+                mAuth
+                        .startActivityForSignInWithProvider(ActivityLogin.this, provider.build())
+                        .addOnSuccessListener(
+                                new OnSuccessListener<AuthResult>() {
+                                    @Override
+                                    public void onSuccess(AuthResult authResult) {
+                                        AuthCredential credential = authResult.getCredential();
+                                        assert credential != null;
+                                        mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if(task.isSuccessful()){
+                                                    String id = mAuth.getUid();
+                                                    checkUser(id);
+                                                }
+                                            }
+                                        });
+                                    }
+                                })
+                        .addOnFailureListener(
+                                new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(ActivityLogin.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
             }
         });
 
@@ -188,7 +216,7 @@ public class ActivityLogin extends AppCompatActivity {
                    }
 
             } catch (ApiException e) {
-                Toast.makeText(ActivityLogin.this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityLogin.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -215,13 +243,13 @@ public class ActivityLogin extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task2) {
                                 if (task2.isSuccessful()) {
-                                    Toast.makeText(ActivityLogin.this, "Success! Created user with Google completed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ActivityLogin.this, "Success!", Toast.LENGTH_SHORT).show();
                                     Intent activityIntent = new Intent(ActivityLogin.this, MainActivity.class);
                                     activityIntent.putExtra("KeepLoged", "KeepLoged");
                                     ActivityLogin.this.finish();
                                     ActivityLogin.this.startActivity(activityIntent);
                                 } else {
-                                    Toast.makeText(ActivityLogin.this, "Error! login with Google inCompleted", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ActivityLogin.this, "Error! ", Toast.LENGTH_SHORT).show();
                                     Intent activityIntent = new Intent(ActivityLogin.this, ActivityLogin.class);
                                     ActivityLogin.this.finish();
                                     ActivityLogin.this.startActivity(activityIntent);
