@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.postover.Model.Client;
@@ -45,6 +46,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     private ImageView imageSave, backimage,imageNote;
     private FloatingActionButton addPhoto,addUbication;
     private FloatingActionsMenu floatingActionsMenu;
+    private TextView textDataTime;
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -146,6 +148,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         noteTile = findViewById(R.id.noteTitle);
         textNote = findViewById(R.id.textNote);
         imageSave = findViewById(R.id.imageSave);
+        textDataTime = findViewById(R.id.textDataTime);
         backimage = findViewById(R.id.imageBack);
         imageNote = findViewById(R.id.imageNote);
         floatingActionsMenu = findViewById(R.id.menuFloating);
@@ -179,7 +182,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             //Se obtiene el la nota del objeto Bundle y se ñadden los valores a la interfaz
             HomeNote note = (HomeNote) bundle.getSerializable("note");
             noteTile.setText(note.getTitle());
-
+            textDataTime.setText(note.getCreationDate().toString());
             textNote.setText(note.getText());
 
 
