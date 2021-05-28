@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
 
                     @Override public void onLongItemClick(View view, int position) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setTitle("Delete Task");
+                        builder.setTitle("Delete Note");
                         builder.setMessage("Are you sure you want to delete this Note?");
                         builder.setCancelable(false);
                         builder.setPositiveButton("Confirm",
