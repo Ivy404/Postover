@@ -4,18 +4,30 @@ import android.os.Parcel;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 public class ToDoNote extends Note{
 
     private boolean completed;
+    private String id ;
 
     public ToDoNote(String title){
         this.creationDate = Calendar.getInstance().getTime();
         this.setLastModification();
         this.setTitle(title);
+        id = UUID.randomUUID().toString();
         this.completed = false;
     }
     public ToDoNote(){}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String getTitle() {
         return this.title;

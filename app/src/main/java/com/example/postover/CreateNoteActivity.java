@@ -84,9 +84,6 @@ public class CreateNoteActivity extends AppCompatActivity {
         init();
         catchNote();
 
-
-
-
         noteTile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -175,6 +172,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         }catch (NullPointerException e){}
 
         linearLayout = findViewById(R.id.linearlayouthomenote);
+
         noteTile = findViewById(R.id.noteTitle);
         textNote = findViewById(R.id.textNote);
         imageSave = findViewById(R.id.imageSave);
@@ -240,8 +238,9 @@ public class CreateNoteActivity extends AppCompatActivity {
             @Override
             public void onSuccess(byte[] bytes) {
                 ImageView imageView = new ImageView(getApplicationContext());
-                imageView.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                imageView.setLayoutParams(layoutParams);
 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
                 imageView.setImageBitmap(bitmap);
@@ -259,8 +258,10 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     private void addText() {
             EditText editText = new EditText(getApplicationContext());
-            editText.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            editText.setLayoutParams(layoutParams);
             editText.setText(texts.get(access));
             access++;
             editText.setBackground(null);
@@ -315,9 +316,12 @@ public class CreateNoteActivity extends AppCompatActivity {
                         InputStream inputStream  = getContentResolver().openInputStream(selectedImageUri);
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
                         ImageView imageView = new ImageView(this);
-                        imageView.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                        imageView.setLayoutParams(layoutParams);
 
                         imageView.setImageBitmap(bitmap);
                         imageView.setVisibility(View.VISIBLE);
@@ -325,8 +329,8 @@ public class CreateNoteActivity extends AppCompatActivity {
                         images.add(uploadPicture(selectedImageUri));
 
                         EditText editText = new EditText(getApplicationContext());
-                        editText.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                        editText.setLayoutParams(layoutParams);
                         editText.setText("");
                         editText.setBackground(null);
                         editText.setVisibility(View.VISIBLE);
@@ -346,8 +350,6 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
     private String uploadPicture(Uri imageUri) {
         final String randomKey = UUID.randomUUID().toString();

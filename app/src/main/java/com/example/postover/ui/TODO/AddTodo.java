@@ -39,7 +39,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -51,7 +53,8 @@ public class AddTodo extends DialogFragment {
     private Button newTodoButton;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
-
+    String id=null;
+    ToDoNote toDoNote;
 
     @NonNull
     @Override
@@ -90,7 +93,12 @@ public class AddTodo extends DialogFragment {
 
             }
         });
-
+        final Bundle bundle = getArguments();
+        if(bundle != null){
+             toDoNote = (ToDoNote) bundle.getSerializable("task");
+            id = bundle.getString("id");
+            newTodoText.setText(toDoNote.getTitle());
+        }
         newTodoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,12 +113,28 @@ public class AddTodo extends DialogFragment {
                             List<ToDoNote> todoList;
                             if(client.getTodoList() == null){
                                 todoList = new ArrayList<>();
+                                client.setTodoList(todoList);
                             }
                             else {
                                 todoList = client.getTodoList();
+
                             }
-                            todoList.add(new ToDoNote(newTodoText.getText().toString()));
-                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(client);
+                            todoList.removeAll(Collections.singletonList(null));
+                            if(id==null) {
+                                todoList.add(new ToDoNote(newTodoText.getText().toString()));
+                            }else{
+
+                                int i = 0;
+                                for(ToDoNote t : todoList){
+                                    if(t.getId().equals(toDoNote.getId())){
+                                        toDoNote.setTitle(newTodoText.getText().toString());
+                                        todoList.set(i,toDoNote);
+                                        break;
+                                    }i++;
+                                }
+
+                            }
+                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("todoList").setValue(todoList);
 
                         }
                         dismiss();
@@ -122,6 +146,8 @@ public class AddTodo extends DialogFragment {
 
             }
         });
+
+
 
         return builder.create();
 

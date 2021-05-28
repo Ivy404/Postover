@@ -5,19 +5,23 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.postover.Model.Client;
 import com.example.postover.Model.ToDoNote;
 import com.example.postover.R;
+import com.example.postover.ui.home.RecyclerItemClickListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -52,6 +56,10 @@ public class TodoFragment extends Fragment {
         todoAdapter = new TodoAdapter(getActivity());
         recyclerView.setAdapter(todoAdapter);
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerItemTouchHelper(todoAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         fab= root.findViewById(R.id.todo_fab);
@@ -64,6 +72,8 @@ public class TodoFragment extends Fragment {
                 addTodo.show(getActivity().getSupportFragmentManager(),"Add Todo");
             }
         });
+
+
         return root;
     }
 
