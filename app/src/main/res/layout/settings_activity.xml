@@ -1,0 +1,73 @@
+<?xml version = "1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/setting_layout_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#CC000000"
+        app:elevation="0dp">
+
+        <ImageView
+            android:id="@+id/backbtt"
+            android:layout_width="27dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:onClick="jumper"
+            app:srcCompat="@drawable/ic_back"
+            app:tint="@color/white"
+            tools:ignore="VectorDrawableCompat" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/user_test_ni"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="User"
+        android:textColor="@color/red"
+        android:layout_marginTop="23dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginLeft="23dp" />
+
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="Change username"
+        android:textColor="#0B0A0A"
+        android:textSize="14dp"
+        android:onClick="changeUsername"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/preferences_text_ni"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:text="Preferences"
+        android:textColor="@color/red"
+        android:layout_marginLeft="23dp" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:layout_marginTop="20dp"
+        android:layout_width="290dp"
+        android:layout_height="23dp"
+        android:layout_gravity="center"
+        android:text="Night mode"
+
+
+        />
+
+    </LinearLayout>
