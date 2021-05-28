@@ -1,32 +1,26 @@
 package com.example.postover;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.postover.Model.Client;
-import com.example.postover.Model.HomeNote;
 import com.example.postover.SlideFragments.AdapterSlide;
 import com.example.postover.ui.ActivityLogin;
-import com.example.postover.ui.ActivityRegister;
 import com.example.postover.ui.DialogCloseListener;
+import com.example.postover.ui.SettingsActivity;
 import com.example.postover.ui.TODO.TodoFragment;
+import com.example.postover.ui.data.usernameDialog;
 import com.example.postover.ui.home.HomeFragment;
 import com.example.postover.ui.CALENDAR.CalendarFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,30 +37,29 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity  implements DialogCloseListener {
+public class MainActivity extends AppCompatActivity  implements DialogCloseListener{
 
 
     private AppBarConfiguration mAppBarConfiguration;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-
+    private TextView textViewUsername;
 
     private EditText loginMail, loginPassword;
     private String mailLogin, passwordLogin;
+
     private TodoFragment todoFragment;
     private HomeFragment homeFragment;
     private CalendarFragment calendarFragment;
@@ -108,9 +101,6 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
         } catch (NullPointerException e) {
             //createFragments();
         }
-
-
-
     }
     public void signOut(View v){
         mAuth.signOut();
@@ -132,28 +122,7 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
         viewPager2.setAdapter(adapter);
         viewPager2.setCurrentItem(1);
 
-        Button todo = findViewById(R.id.todo);
-        Button notes = findViewById(R.id.notes);
-        Button calendar = findViewById(R.id.calendar);
 
-        todo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager2.setCurrentItem(0);
-            }
-        });;
-        notes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager2.setCurrentItem(1);
-            }
-        });
-        calendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager2.setCurrentItem(2);
-            }
-        });
         updateNav();
     }
     public void updateNav(){
@@ -264,5 +233,12 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
             }
         }
 
+        public void settingsJumper(View v){
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            MainActivity.this.finish();
+            MainActivity.this.startActivity(intent);
+        }
 
-    }
+
+
+}

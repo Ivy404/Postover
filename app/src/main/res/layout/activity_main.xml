@@ -42,50 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="80pt"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/todo"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|left"
-                android:fadingEdge="none"
-                android:text="@string/todo_button"
-                android:textColor="@color/white"
-                app:backgroundTint="#00FFFFFF"
-                app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
-                app:iconGravity="end"
-                app:iconTint="#FFFFFF" />
-
-            <Button
-                android:id="@+id/notes"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|left"
-                android:fadingEdge="none"
-                android:text="@string/notes_button"
-                android:textColor="@color/white"
-                app:backgroundTint="#00FFFFFF"
-                app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
-                app:iconGravity="end"
-                app:iconTint="#FFFFFF"/>
-
-            <Button
-                android:id="@+id/calendar"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|left"
-                android:fadingEdge="none"
-                android:text="@string/calendar_button"
-                android:textColor="@color/white"
-                app:backgroundTint="#00FFFFFF"
-                app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
-                app:iconGravity="end"
-                app:iconTint="#FFFFFF" />
-        </LinearLayout>
+            android:orientation="vertical"/>
 
         <Button
             android:id="@+id/signOut"
