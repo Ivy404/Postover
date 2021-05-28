@@ -1,5 +1,6 @@
 package com.example.postover.ui.home;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -29,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -62,11 +66,28 @@ public class HomeFragment extends Fragment {
                         intent.putExtra("position",position);
                         startActivityForResult(intent,1);
 
-
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
-                        Toast.makeText(getContext(), "long", Toast.LENGTH_LONG).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Delete Task");
+                        builder.setMessage("Are you sure you want to delete this Note?");
+                        builder.setCancelable(false);
+                        builder.setPositiveButton("Confirm",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        deleteNote(position);
+                                    }
+                                });
+                            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }
                 })
         );
@@ -78,6 +99,22 @@ public class HomeFragment extends Fragment {
 
         return root;
     }
+
+    private void deleteNote(int position) {
+        DatabaseReference reference = mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("homeNoteList");
+
+        Task<DataSnapshot> query = reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                List<HomeNote> homenotes = (List<HomeNote>) task.getResult().getValue();
+                homenotes.remove(position);
+                homenotes.removeAll(Collections.singletonList(null));
+                mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("homeNoteList").setValue(homenotes);
+                getList();
+            }
+        });
+            }
+
 
     public void AddNote(View view){
         //AddHomeNote.newInstance().show(getActivity().getSupportFragmentManager(),AddHomeNote.TAG);
