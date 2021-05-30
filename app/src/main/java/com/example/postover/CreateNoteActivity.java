@@ -2,12 +2,14 @@ package com.example.postover;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -18,6 +20,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -48,6 +51,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,7 +64,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     private TextView textDataTime;
     private LinearLayout linearLayout;
     private  HomeNote note;
-    private List<String> images,texts;
+    private List<String> images,texts,imagesToDelete,imagesDeleted;
 
     private  int position=-1,access=0;
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 10;
@@ -70,6 +74,10 @@ public class CreateNoteActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    private View.OnLongClickListener myClick;
+    int tag = 3;
+
+
 
 
     @Override
@@ -108,6 +116,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         backimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                deleteImages((ArrayList<String>) imagesToDelete);
                 setResult(1);
                 finish();
             }
@@ -130,24 +139,26 @@ public class CreateNoteActivity extends AppCompatActivity {
                             } else {
                                 homeNoteList = client.getHomeNoteList();
                             }
-                            if(position==-1) {
+                            if (position == -1) {
                                 HomeNote homeNote = new HomeNote(noteTile.getText().toString());
                                 homeNote.setText(textNote.getText().toString());
                                 homeNote.setImages((ArrayList<String>) images);
-                                homeNote.setTexts(texts);
-                                homeNoteList.add(homeNote);
                                 saveTexts();
                                 homeNote.setTexts(texts);
-                            }
-                            else{
+                                homeNoteList.add(homeNote);
+                            } else {
                                 HomeNote homeNote = homeNoteList.get(position);
                                 homeNote.setTitle(noteTile.getText().toString());
                                 homeNote.setText(textNote.getText().toString());
                                 homeNote.setImages((ArrayList<String>) images);
                                 saveTexts();
                                 homeNote.setTexts(texts);
+                                //homeNoteList.add(homeNote);
                             }
-                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(client);
+
+                            deleteImages((ArrayList<String>) imagesDeleted);
+                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).
+                                    child("homeNoteList").setValue(homeNoteList);
 
                         }
                         setResult(1);
@@ -159,10 +170,66 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         });
 
+        myClick = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateNoteActivity.this);
+                builder.setTitle("Delete Image");
+                builder.setMessage("Are you sure you want to delete this Image?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Confirm",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+
+                                int itr = 0;
+                                int suma = 3;
+                                while((int) v.getTag() != suma){
+                                    suma+=2;
+                                    itr++;
+                                }
+                                int index = (int) v.getTag() -3 - itr;
+                                Toast.makeText(CreateNoteActivity.this,"index "+index,Toast.LENGTH_SHORT).show();
+
+                                String url = images.get(index);
+                                images.remove(index);
+                                images.removeAll(Collections.singletonList(null));
+                                imagesDeleted.add(url);
+                                Object tagText;
+                                tagText = (Object) (((int)v.getTag() ) + 1);
+                                EditText etext = (EditText) linearLayout.findViewWithTag(tagText);
+                                String text = etext.getText().toString();
+                                if(index !=0) {
+                                    texts.set(index-1,texts.get(index-1)+"\n"+text);
+                                    tagText = (Object) (((int)v.getTag() ) - 1);
+                                    EditText editText = (EditText)linearLayout.findViewWithTag(tagText);
+                                    editText.setText(editText.getText()+"\n"+text);
+                                }
+                                else {
+                                    textNote.setText(textNote.getText().toString()+"\n"+texts.get(index));
+                                }
+                                texts.remove(index);
+                                texts.removeAll(Collections.singletonList(null));
+                                linearLayout.removeView(linearLayout.findViewWithTag(v.getTag()));
+                                 tagText = (Object) (((int)v.getTag() ) + 1);
+                                linearLayout.removeView(linearLayout.findViewWithTag(tagText));
+                            }
+                        });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return true;
+            }
+        };
+
+
     }
-
-
-
 
     private void init() {
         try {
@@ -181,7 +248,8 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         //imageNote = new ImageView(this);
         //imageNote.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-
+        imagesToDelete = new ArrayList<>();
+        imagesDeleted = new ArrayList<>();
 
         floatingActionsMenu = findViewById(R.id.menuFloating);
         addPhoto = (com.getbase.floatingactionbutton.FloatingActionButton) floatingActionsMenu.getChildAt(0);
@@ -207,6 +275,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         });
     }
+
     private void catchNote() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -227,14 +296,13 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         }
 
-
     private void getImage(String image) {
         // Create a reference with an initial file path and name
         StorageReference pathReference = null;
         try {
              pathReference = storageReference.child(image);//child(mAuth.getCurrentUser().getUid()).child(image);
 
-           pathReference.getBytes((long) (2*Math.pow(10,7))).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+           pathReference.getBytes((long)(2* Math.pow(10,7))).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 ImageView imageView = new ImageView(getApplicationContext());
@@ -244,7 +312,11 @@ public class CreateNoteActivity extends AppCompatActivity {
 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
                 imageView.setImageBitmap(bitmap);
+                imageView.setTag(tag);
+                tag++;
+                imageView.setOnLongClickListener(myClick);
                 imageView.setVisibility(View.VISIBLE);
+                imageView.getLayoutParams().height = 750;
                 linearLayout.addView(imageView);
                 addText();
 
@@ -252,7 +324,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         });
         }catch (Exception e){
-
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -263,6 +335,8 @@ public class CreateNoteActivity extends AppCompatActivity {
 
             editText.setLayoutParams(layoutParams);
             editText.setText(texts.get(access));
+            editText.setTag(tag);
+            tag++;
             access++;
             editText.setBackground(null);
             editText.setVisibility(View.VISIBLE);
@@ -288,6 +362,20 @@ public class CreateNoteActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent,REQUEST_CODE_SELECT_IMAGE);
 
+
+    }
+
+    private void deleteImages(ArrayList<String> imagesToDelete){
+        for (String s : imagesToDelete) {
+            StorageReference imageToDelete = storage.getReference(s);
+            imageToDelete.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                }
+            });
+
+        }
 
     }
     @Override
@@ -319,22 +407,31 @@ public class CreateNoteActivity extends AppCompatActivity {
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
+
                         ImageView imageView = new ImageView(this);
-
-                        imageView.setLayoutParams(layoutParams);
-
                         imageView.setImageBitmap(bitmap);
+                        imageView.setLayoutParams(layoutParams);
+                        imageView.getLayoutParams().height = 750;
                         imageView.setVisibility(View.VISIBLE);
+                        imageView.setTag(tag);
+                        tag++;
+                        imageView.setOnLongClickListener(myClick);
                         linearLayout.addView(imageView);
                         images.add(uploadPicture(selectedImageUri));
 
                         EditText editText = new EditText(getApplicationContext());
 
-                        editText.setLayoutParams(layoutParams);
+                        LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                        editText.setLayoutParams(layoutParams1);
                         editText.setText("");
+                        editText.setTag(tag);
+                        tag++;
                         editText.setBackground(null);
                         editText.setVisibility(View.VISIBLE);
                         editText.setHint("You can keep writing here!");
+                        editText.setGravity(Gravity.LEFT | Gravity.TOP);
                         texts.add(editText.getText().toString());
                         linearLayout.addView(editText);
 
@@ -363,6 +460,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
+                imagesToDelete.add("images/"+mAuth.getCurrentUser().getUid()+"/"+randomKey);
                 Snackbar.make(findViewById(android.R.id.content),"Image Upload.",Snackbar.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
