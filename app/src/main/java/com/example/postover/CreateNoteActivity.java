@@ -169,7 +169,6 @@ public class CreateNoteActivity extends AppCompatActivity {
 
             }
         });
-
         myClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -293,6 +292,9 @@ public class CreateNoteActivity extends AppCompatActivity {
             for(String i : images){
                 getImage(i);
                 }
+            }else{
+                if(texts == null) texts = new ArrayList<>();
+                if(images == null) images = new ArrayList<>();
             }
         }
 
@@ -438,7 +440,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
 
                     }catch (Exception e){
-                        Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG);
+                        Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
 
                     }
 
