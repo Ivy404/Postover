@@ -2,11 +2,17 @@ package com.example.postover;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +38,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -45,6 +54,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,9 +89,6 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
         mAuth = FirebaseAuth.getInstance();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -138,7 +148,19 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
                     nameNavHead.setText(client.getName());
                     TextView emailNavHead = (TextView) findViewById(R.id.emailNavhead);
                     emailNavHead.setText(client.getMail());
+                    ImageView imageNavhead = (ImageView) findViewById(R.id.image_navHead);
 
+                    try {
+                        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(MainActivity.this);
+                        Uri photo  = account.getPhotoUrl();
+
+                        //imageNavhead.setImageURI(photo);
+
+                        //Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photo);
+                       // imageNavhead.setImageBitmap(bitmap);
+                    } catch (Exception e) {
+
+                    }
                 }
             }
         });
