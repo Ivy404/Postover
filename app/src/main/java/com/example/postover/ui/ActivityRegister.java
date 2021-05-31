@@ -53,7 +53,6 @@ public class ActivityRegister extends AppCompatActivity {
         editTextEmail = (EditText) findViewById(R.id.pt_mailRegister);
         Button register = (Button) findViewById(R.id.button_register_final);
         TextView member = (TextView) findViewById(R.id.TV_member);
-        TextView guest = (TextView) findViewById(R.id.guestMember);
         intent = new Intent(ActivityRegister.this, MainActivity.class);
         loginIntent = new Intent(ActivityRegister.this, ActivityLogin.class);
 
@@ -90,32 +89,6 @@ public class ActivityRegister extends AppCompatActivity {
                 startActivity(loginIntent);
             }
         });
-        guest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerGuestUser();
-                Intent mainIntent = new Intent(ActivityRegister.this, MainActivity.class);
-                ActivityRegister.this.finish();
-                ActivityRegister.this.startActivity(mainIntent);
-
-            }
-        });
-    }
-    private void registerGuestUser() {
-        mAuth.signInAnonymously()
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(ActivityRegister.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
     }
 
     private void registerNewUser() {
@@ -124,6 +97,7 @@ public class ActivityRegister extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Client cliente = new Client(name, email);
+
                     String id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
                     mDatabase.child("users").child(id).setValue(cliente).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

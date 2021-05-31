@@ -16,7 +16,7 @@ import java.util.Map;
 public class Client {
     private String name;
     private String mail;
-    //private Image icon;
+
     private List<ToDoNote> todoList;
     private List<HomeNote> homeNoteList;
 
@@ -35,7 +35,6 @@ public class Client {
 
         HomeNote homeNote = new HomeNote("Your first HomeNote!");
         homeNoteList.add(homeNote);
-
 
         CalendarNote calendarNote = new CalendarNote("First Calendar","Information", Calendar.getInstance().getTime());
         calendarNotes.add(calendarNote);
@@ -65,6 +64,7 @@ public class Client {
     public HashMap<String, List<CalendarNote>> getHashCalendar() {
         return hashCalendar;
     }
+
 
     public void setHashCalendar(HashMap<String, List<CalendarNote>> hashCalendar) {
         this.hashCalendar = hashCalendar;
