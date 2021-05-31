@@ -261,6 +261,12 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
             MainActivity.this.startActivity(intent);
         }
 
+    @Override
+    protected void onNightModeChanged(int mode) {
+        super.onNightModeChanged(mode);
+    }
+
+
 
 
 }

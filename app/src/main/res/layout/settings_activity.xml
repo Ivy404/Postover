@@ -45,11 +45,11 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Change username"
-        android:textColor="#0B0A0A"
-        android:textSize="14dp"
         android:onClick="changeUsername"
-        android:textStyle="normal" />
+
+        android:text="Change username"
+        android:textSize="14dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/preferences_text_ni"
@@ -61,13 +61,13 @@
         android:layout_marginLeft="23dp" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:layout_marginTop="20dp"
+        android:id="@+id/switchNightMode"
         android:layout_width="290dp"
         android:layout_height="23dp"
         android:layout_gravity="center"
-        android:text="Night mode"
+        android:layout_marginTop="20dp"
 
 
-        />
+        android:text="Night mode" />
 
     </LinearLayout>
