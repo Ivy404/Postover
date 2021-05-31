@@ -100,7 +100,10 @@ public class SettingsActivity extends AppCompatActivity implements usernameDialo
 
     @Override
     public void applyTexts(String username) {
-
+        Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+        intent.putExtra("ChangeUs",username);
+        SettingsActivity.this.finish();
+        SettingsActivity.this.startActivity(intent);
     }
 
 

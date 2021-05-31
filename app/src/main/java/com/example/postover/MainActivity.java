@@ -94,6 +94,8 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
 
             } else if (getIntent().getExtras().getString("KeepLoged") != null) {
                 createFragments();
+            }else if(getIntent().getExtras().getString("ChangeUs") != null){
+                createFragments();
             }
             else {
                 createFragments();
@@ -135,7 +137,13 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                     Client client = task.getResult().getValue(Client.class);
                     TextView nameNavHead = (TextView) findViewById(R.id.name_navhead);
-                    nameNavHead.setText(client.getName());
+                    if(getIntent().getExtras().getString("ChangeUs") != null){
+                        Bundle bundle = getIntent().getExtras();
+                        String message = bundle.getString("ChangeUs");
+                        nameNavHead.setText(message);
+                    }else{
+                        nameNavHead.setText(client.getName());
+                    }
                     TextView emailNavHead = (TextView) findViewById(R.id.emailNavhead);
                     emailNavHead.setText(client.getMail());
 
