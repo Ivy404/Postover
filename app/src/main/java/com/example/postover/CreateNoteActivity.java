@@ -482,4 +482,11 @@ public class CreateNoteActivity extends AppCompatActivity {
         return "images/"+mAuth.getCurrentUser().getUid()+"/"+randomKey;
 
     }
+
+    @Override
+    protected void onNightModeChanged(int mode) {
+        super.onNightModeChanged(mode);
+    }
+
+
 }
