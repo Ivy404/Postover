@@ -1,5 +1,12 @@
 package com.example.postover;
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.NotificationChannel;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -44,6 +51,7 @@ import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -62,8 +70,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity  implements DialogCloseListener{
+public class MainActivity extends AppCompatActivity implements DialogCloseListener {
 
+    public static final String NOTIFICATION_CHANNEL_ID = "notifyLemubit";
+    private final static String default_notification_channel_id = "default";
 
     private AppBarConfiguration mAppBarConfiguration;
     private AlertDialog.Builder dialogBuilder;
@@ -89,11 +99,15 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
         mAuth = FirebaseAuth.getInstance();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
 
+        createNotificationChannel();
         try {
             if (getIntent().getExtras().getString("Login") != null) {
                 Intent intent = new Intent(MainActivity.this, ActivityLogin.class);
@@ -104,28 +118,30 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
 
             } else if (getIntent().getExtras().getString("KeepLoged") != null) {
                 createFragments();
-            }
-            else {
+            } else if (getIntent().getExtras().getString("ChangeUs") != null) {
+                createFragments();
+            } else {
                 createFragments();
             }
         } catch (NullPointerException e) {
             //createFragments();
         }
     }
-    public void signOut(View v){
+
+    public void signOut(View v) {
         mAuth.signOut();
         Intent mainIntent = new Intent(MainActivity.this, ActivityLogin.class);
         MainActivity.this.startActivity(mainIntent);
         MainActivity.this.finish();
     }
 
-    public void createFragments(){
+    public void createFragments() {
         List<Fragment> fragmentList = new ArrayList<>();
         todoFragment = new TodoFragment();
         fragmentList.add(todoFragment);
         homeFragment = new HomeFragment();
         fragmentList.add(homeFragment);
-        calendarFragment =new CalendarFragment();
+        calendarFragment = new CalendarFragment();
         fragmentList.add(calendarFragment);
         AdapterSlide adapter = new AdapterSlide(getSupportFragmentManager(), getLifecycle(), fragmentList);
         ViewPager2 viewPager2 = findViewById(R.id.view_pager2);
@@ -135,7 +151,8 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
 
         updateNav();
     }
-    public void updateNav(){
+
+    public void updateNav() {
         mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -145,19 +162,25 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                     Client client = task.getResult().getValue(Client.class);
                     TextView nameNavHead = (TextView) findViewById(R.id.name_navhead);
-                    nameNavHead.setText(client.getName());
+                    if (getIntent().getExtras().getString("ChangeUs") != null) {
+                        Bundle bundle = getIntent().getExtras();
+                        String message = bundle.getString("ChangeUs");
+                        nameNavHead.setText(message);
+                    } else {
+                        nameNavHead.setText(client.getName());
+                    }
                     TextView emailNavHead = (TextView) findViewById(R.id.emailNavhead);
                     emailNavHead.setText(client.getMail());
                     ImageView imageNavhead = (ImageView) findViewById(R.id.image_navHead);
 
                     try {
                         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(MainActivity.this);
-                        Uri photo  = account.getPhotoUrl();
+                        Uri photo = account.getPhotoUrl();
 
                         //imageNavhead.setImageURI(photo);
 
                         //Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photo);
-                       // imageNavhead.setImageBitmap(bitmap);
+                        // imageNavhead.setImageBitmap(bitmap);
                     } catch (Exception e) {
 
                     }
@@ -181,7 +204,6 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
     }
 
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -192,14 +214,14 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 
-                if(account != null){
-                    AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
+                if (account != null) {
+                    AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                     FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 //Datos realetime database
-                            }else{
+                            } else {
                                 Toast.makeText(MainActivity.this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -209,13 +231,13 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
                 Toast.makeText(this, "Error! Google authentification exploted", Toast.LENGTH_SHORT).show();
             }
         }
-        if(resultCode == 1){
-            handleDialogClose(dialog,"HomeNote");
+        if (resultCode == 1) {
+            handleDialogClose(dialog, "HomeNote");
 
         }
     }
 
-    public void openDrawer(View v){
+    public void openDrawer(View v) {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.openDrawer(GravityCompat.START);
     }
@@ -238,35 +260,60 @@ public class MainActivity extends AppCompatActivity  implements DialogCloseListe
     }
 
 
+    @Override
+    public void handleDialogClose(DialogInterface dialog, String note) {
+        switch (note) {
+            case "Todo":
+                todoFragment.getList();
+                break;
+            case "HomeNote":
+                homeFragment.getList();
+                break;
+            case "CalendarNote":
+                calendarFragment.getList();
+                break;
 
-        @Override
-        public void handleDialogClose (DialogInterface dialog, String note){
-            switch (note) {
-                case "Todo":
-                    todoFragment.getList();
-                    break;
-                case "HomeNote":
-                    homeFragment.getList();
-                    break;
-                case "CalendarNote":
-                    calendarFragment.getList();
-                    break;
-
-            }
         }
+    }
 
-        public void settingsJumper(View v){
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            MainActivity.this.finish();
-            MainActivity.this.startActivity(intent);
-        }
+    public void settingsJumper(View v) {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        MainActivity.this.finish();
+        MainActivity.this.startActivity(intent);
+    }
 
     @Override
     protected void onNightModeChanged(int mode) {
         super.onNightModeChanged(mode);
     }
 
+    private void createNotificationChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            CharSequence name = "LemubitReminderChannel";
+            String description = "Channel for Lemubit Reminder";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
 
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+            notificationChannel.setDescription(description);
 
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+    }
 
+    public static void creaNotificacion(long when, String title, String content, Context context) {
+
+        Intent notificationIntent = new Intent(context, NotificationPublisher.class);
+        notificationIntent.putExtra("id", (int) when);
+        notificationIntent.putExtra("title", title);
+        notificationIntent.putExtra("content", content);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+
+        long dayInMillis = 24 * 60 * 60 * 1000;
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, when - dayInMillis, pendingIntent);
+    }
 }

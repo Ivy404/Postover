@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 
+import com.example.postover.MainActivity;
 import com.example.postover.Model.CalendarNote;
 import com.example.postover.Model.Client;
 import com.example.postover.R;
@@ -189,6 +190,7 @@ public class AddCalendar extends DialogFragment {
 
                         CalendarNote nota = new CalendarNote(newCalendarNote.getText().toString(), newCalendarNotesub.getText().toString(), calendar.getTime());
                         addCalendarNote(nota);
+                        MainActivity.creaNotificacion(calendar.getTimeInMillis(), newCalendarNote.getText().toString(), newCalendarNotesub.getText().toString(), getContext());
 
                     }
                 }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
@@ -213,6 +215,7 @@ public class AddCalendar extends DialogFragment {
                 calendar.set(Calendar.YEAR, year);
                 CalendarNote nota = new CalendarNote(newCalendarNote.getText().toString(), newCalendarNotesub.getText().toString(), calendar.getTime());
                 addCalendarNote(nota);
+                MainActivity.creaNotificacion(calendar.getTimeInMillis(), newCalendarNote.getText().toString(), newCalendarNotesub.getText().toString(), getContext());
             }
         },hora,min,true);
         tmd.show();
