@@ -25,19 +25,14 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class SettingsActivity extends AppCompatActivity implements usernameDialog.ExampleDialogListener{
     private TextView textViewUsername;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
-
         SharedPreferences sharedPreferences = getSharedPreferences("night", 0);
-        boolean isNightModeOn = sharedPreferences.getBoolean("night_mode", true);
-
+        boolean isNightModeOn = sharedPreferences.getBoolean("night_mode", false);
         ImageView backbtt = (ImageView) findViewById(R.id.backbtt);
-
         SwitchMaterial nightmode = findViewById(R.id.switchNightMode);
 
         Drawable bgfg = getResources().getDrawable(R.drawable.bgdefault);
@@ -70,14 +65,7 @@ public class SettingsActivity extends AppCompatActivity implements usernameDialo
                 }
             }
         });
-
-
-
-
     }
-
-
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
@@ -105,6 +93,4 @@ public class SettingsActivity extends AppCompatActivity implements usernameDialo
         SettingsActivity.this.finish();
         SettingsActivity.this.startActivity(intent);
     }
-
-
 }
