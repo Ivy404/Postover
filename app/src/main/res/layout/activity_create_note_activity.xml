@@ -38,7 +38,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="12dp"
             android:src="@drawable/ic_back"
-            android:tint="@color/mr_cast_meta_black_scrim"
+            app:tint="@color/mr_cast_meta_black_scrim"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +49,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="15dp"
             android:src="@drawable/ic_done"
-            android:tint="@color/mr_cast_meta_black_scrim"
+            app:tint="@color/mr_cast_meta_black_scrim"
             app:layout_constraintBottom_toBottomOf="@+id/imageBack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -130,23 +130,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         >
-
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addPhoto"
+            android:id="@+id/addUbication"
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/camera"
+            android:src="@drawable/ic_baseline_add_location_alt_24"
+            app:fabCustomSize="40dp"
             app:fab_colorNormal="@color/lightred"
             app:fab_colorPressed="@color/red"
             app:layout_constraintBottom_toTopOf="@+id/menu"
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addUbication"
+            android:id="@+id/addPhoto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_baseline_add_location_alt_24"
-            app:fabCustomSize="40dp"
+            android:src="@drawable/camera"
             app:fab_colorNormal="@color/lightred"
             app:fab_colorPressed="@color/red"
             app:layout_constraintBottom_toTopOf="@+id/menu"

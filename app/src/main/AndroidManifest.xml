@@ -51,6 +51,10 @@
             </intent-filter>
         </activity>
         <receiver android:name=".NotificationPublisher"/>
+        <receiver
+            android:name=".MainActivity$AlarmReceiver"
+            android:enabled="true"
+            android:exported="true"/>
 
 
     </application>

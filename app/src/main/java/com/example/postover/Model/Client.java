@@ -19,12 +19,15 @@ public class Client {
 
     private List<ToDoNote> todoList;
     private List<HomeNote> homeNoteList;
-
+    private List<List<ToDoNote>> todoReseter;
     private HashMap<String,List<CalendarNote>> hashCalendar;
+
+
 
     public Client(String name, String mail) {
         this.name = name;
         this.mail = mail;
+        todoReseter = new ArrayList<>();
         todoList = new ArrayList<>();
         homeNoteList = new ArrayList<>();
         hashCalendar = new HashMap<>();
@@ -86,6 +89,12 @@ public class Client {
         this.mail = mail;
     }
 
+    public List<List<ToDoNote>> getTodoReseter() {
+        return todoReseter;
+    }
 
+    public void setTodoReseter(List<List<ToDoNote>> todoReseter) {
+        this.todoReseter = todoReseter;
+    }
 
 }

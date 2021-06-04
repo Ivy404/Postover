@@ -99,4 +99,30 @@ public class TodoFragment extends Fragment {
         });
     }
 
+    public void Reseter(){
+        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                List<List<ToDoNote>> ToDoReseter;
+
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                } else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    Client client = task.getResult().getValue(Client.class);
+                    if(client.getTodoReseter() == null){
+                        ToDoReseter = new ArrayList<>();
+                    }
+                    else {
+                        ToDoReseter = client.getTodoReseter();
+                    }
+                    ToDoReseter.add(client.getTodoList());
+                    client.setTodoList(new ArrayList<ToDoNote>());
+                    mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(client);
+                    todoAdapter.setTodoList(client.getTodoList());
+                }
+            }
+        });
+    }
+
 }
