@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.NotificationChannel;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.postover.Model.Client;
+import com.example.postover.Model.ToDoNote;
 import com.example.postover.SlideFragments.AdapterSlide;
 import com.example.postover.ui.ActivityLogin;
 import com.example.postover.ui.DialogCloseListener;
@@ -67,6 +69,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -83,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private EditText loginMail, loginPassword;
     private String mailLogin, passwordLogin;
 
-    private TodoFragment todoFragment;
+    private static TodoFragment todoFragment;
     private HomeFragment homeFragment;
     private CalendarFragment calendarFragment;
 
@@ -108,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         user = mAuth.getCurrentUser();
 
         createNotificationChannel();
+        createTODOReseterAlarm();
         try {
             if (getIntent().getExtras().getString("Login") != null) {
                 Intent intent = new Intent(MainActivity.this, ActivityLogin.class);
@@ -251,7 +256,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                     Toast.makeText(MainActivity.this, "Success! login completed", Toast.LENGTH_SHORT).show();
                     createFragments();
                     dialog.dismiss();
-
                 } else {
                     Toast.makeText(MainActivity.this, "Error! These credentials do not match our records", Toast.LENGTH_SHORT).show();
                 }
@@ -308,12 +312,48 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         notificationIntent.putExtra("title", title);
         notificationIntent.putExtra("content", content);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) System.currentTimeMillis(), notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 
-        long dayInMillis = 24 * 60 * 60 * 1000;
+        long hourInMillis = 60 * 60 * 1000;
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, when - dayInMillis, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, when - hourInMillis, pendingIntent);
+    }
+
+    public void createTODOReseterAlarm() {
+        //System request code
+        int DATA_FETCHER_RC = 123;
+        //Create an alarm manager
+        AlarmManager mAlarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
+        //Create the time of day you would like it to go off. Use a calendar
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+
+        //Create an intent that points to the receiver. The system will notify the app about the current time, and send a broadcast to the app
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, DATA_FETCHER_RC,intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //initialize the alarm by using inexactrepeating. This allows the system to scheduler your alarm at the most efficient time around your
+        //set time, it is usually a few seconds off your requested time.
+        // you can also use setExact however this is not recommended. Use this only if it must be done then.
+        //Also set the interval using the AlarmManager constants
+        mAlarmManager.setInexactRepeating(AlarmManager.RTC,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent);
+
+    }
+
+    public static void reseterTODO() {
+        todoFragment.Reseter();
+    }
+    //This is the broadcast receiver you create where you place your logic once the alarm is run. Once the system realizes your alarm should be run, it will communicate to your app via the BroadcastReceiver. You must implement onReceive.
+    public static class AlarmReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //Your code once the alarm is set off goes here
+            MainActivity.reseterTODO();
+            // You can use an intent filter to filter the specified intent
+        }
     }
 }
