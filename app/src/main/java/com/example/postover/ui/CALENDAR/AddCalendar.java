@@ -233,6 +233,7 @@ public class AddCalendar extends DialogFragment {
                     HashMap<String, List<CalendarNote>> calendarNoteList;
                     if(client.getHashCalendar() == null){
                         calendarNoteList = new HashMap<>();
+                        client.setHashCalendar(calendarNoteList);
                     }
                     else {
                         calendarNoteList = client.getHashCalendar();
@@ -248,6 +249,7 @@ public class AddCalendar extends DialogFragment {
                         calendarNoteList.put(Long.toString(note.getDate().getTime()),calendarNotes);
 
                     }
+
                     mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(client);
                     dismiss();
                 }
