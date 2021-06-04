@@ -98,7 +98,7 @@ public class TodoFragment extends Fragment {
             }
         });
     }
-
+/*
     public void Reseter(){
         mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -123,6 +123,6 @@ public class TodoFragment extends Fragment {
                 }
             }
         });
-    }
+    }*/
 
 }

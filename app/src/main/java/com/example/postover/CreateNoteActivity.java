@@ -184,12 +184,12 @@ public class CreateNoteActivity extends AppCompatActivity {
 
                                 int itr = 0;
                                 int suma = 3;
+
                                 while((int) v.getTag() != suma){
                                     suma+=2;
                                     itr++;
                                 }
                                 int index = (int) v.getTag() -3 - itr;
-                                Toast.makeText(CreateNoteActivity.this,"index "+index,Toast.LENGTH_SHORT).show();
 
                                 String url = images.get(index);
                                 images.remove(index);
@@ -199,6 +199,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                                 tagText = (Object) (((int)v.getTag() ) + 1);
                                 EditText etext = (EditText) linearLayout.findViewWithTag(tagText);
                                 String text = etext.getText().toString();
+                                saveTexts();
                                 if(index !=0) {
                                     texts.set(index-1,texts.get(index-1)+"\n"+text);
                                     tagText = (Object) (((int)v.getTag() ) - 1);
@@ -206,13 +207,24 @@ public class CreateNoteActivity extends AppCompatActivity {
                                     editText.setText(editText.getText()+"\n"+text);
                                 }
                                 else {
-                                    textNote.setText(textNote.getText().toString()+"\n"+texts.get(index));
+                                    //tagText = (Object) (((int)v.getTag() ) +1);
+                                    //EditText editText = (EditText)linearLayout.findViewWithTag(tagText);
+                                    //texts.set(index,editText.getText().toString());
+                                    textNote.setText(textNote.getText().toString()+texts.get(index));
                                 }
                                 texts.remove(index);
                                 texts.removeAll(Collections.singletonList(null));
                                 linearLayout.removeView(linearLayout.findViewWithTag(v.getTag()));
                                  tagText = (Object) (((int)v.getTag() ) + 1);
                                 linearLayout.removeView(linearLayout.findViewWithTag(tagText));
+                                tag=3;
+                                Object tag_ = (Object) tag;
+                                for(int i = 2; i<linearLayout.getChildCount();i++){
+
+                                    linearLayout.getChildAt(i).setTag(tag_);
+                                     tag_ = (Object)(tag + 1);
+                                }
+
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

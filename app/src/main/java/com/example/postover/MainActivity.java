@@ -112,16 +112,14 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         user = mAuth.getCurrentUser();
 
         createNotificationChannel();
-        createTODOReseterAlarm();
+       // createTODOReseterAlarm();
         try {
             if (getIntent().getExtras().getString("Login") != null) {
                 Intent intent = new Intent(MainActivity.this, ActivityLogin.class);
                 MainActivity.this.finish();
                 MainActivity.this.startActivity(intent);
-            } else if (getIntent().getExtras().getString("Guest") != null) {
-                System.out.println("he entrado");
-
-            } else if (getIntent().getExtras().getString("KeepLoged") != null) {
+            }
+           else if (getIntent().getExtras().getString("KeepLoged") != null) {
                 createFragments();
             } else if (getIntent().getExtras().getString("ChangeUs") != null) {
                 createFragments();
@@ -321,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         alarmManager.set(AlarmManager.RTC_WAKEUP, when - hourInMillis, pendingIntent);
     }
 
-    public void createTODOReseterAlarm() {
+    /*public void createTODOReseterAlarm() {
         //System request code
         int DATA_FETCHER_RC = 123;
         //Create an alarm manager
@@ -355,5 +353,5 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             MainActivity.reseterTODO();
             // You can use an intent filter to filter the specified intent
         }
-    }
+    }*/
 }
