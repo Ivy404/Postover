@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/tools"
-android:id="@+id/linearlayoutcalendar"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_below="@+id/day_calendar_text"
-android:layout_alignParentStart="true"
-android:layout_alignParentLeft="true"
-android:orientation="vertical"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearlayoutcalendar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/day_calendar_text"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentLeft="true"
+    android:orientation="vertical">
 
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="60dp"
@@ -20,21 +20,33 @@ android:orientation="vertical"
 
     <TextView
         android:id="@+id/calendar_info_text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
+        android:text="INFO"
         android:textSize="15dp"
-
-        />
-
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/calendar_subInfo"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subinfo"
+        android:textSize="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calendar_info_text"/>
+
+    <TextView
+        android:id="@+id/date_info"
+        android:layout_width="wrap_content"
+        android:text="Date"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_height="wrap_content"
         android:textSize="10dp" />
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </LinearLayout>
 

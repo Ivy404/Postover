@@ -20,12 +20,13 @@ public class InformationCalendarViewAdapter extends RecyclerView.Adapter<Informa
     FragmentActivity mainActivity;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-    private TextView calendarInfo,calendarSubInfo;
+    private TextView calendarInfo,calendarSubInfo,date;
 
     public ViewHolder(View view) {
         super(view);
         calendarInfo = view.findViewById(R.id.calendar_info_text);
         calendarSubInfo = view.findViewById(R.id.calendar_subInfo);
+        date = view.findViewById(R.id.date_info);
 
     }
     public TextView getTextView() {
@@ -53,6 +54,8 @@ public class InformationCalendarViewAdapter extends RecyclerView.Adapter<Informa
 
         holder.calendarInfo.setText(calendarlistinfo.get(position).getTitle());
         holder.calendarSubInfo.setText(calendarlistinfo.get(position).getSubtitle());
+        holder.date.setText(calendarlistinfo.get(position).getDate().toString());
+
     }
 
     @Override

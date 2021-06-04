@@ -91,9 +91,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                 holder.rvSubItem.setAdapter(informationCalendarViewAdapter);
                 holder.rvSubItem.setRecycledViewPool(viewPool);
             }
-
-
-
     }
 
     @Override
